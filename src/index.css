@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #161C24;
+  --color-code: #2FBE0D;
+
+  --color-card: #181E24;
+  --color-card-border: #222832;
+  --color-card-att: #2F3742;
+
+  --color-button: #385BA2;
+  --color-button-border: #395FA7;
+}
+
+html, body, #root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  margin: 0px;
+  padding: 0px;
+  background-color: #161C24;
+}
