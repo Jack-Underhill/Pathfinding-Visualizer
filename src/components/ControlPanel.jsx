@@ -1,6 +1,6 @@
 // import useGrid from "../hooks/useGrid"
 
-function ControlPanel({ onRunStep }) {
+function ControlPanel({ onRunAlgo }) {
     let cardClass = "bg-sky-800 w-full p-5 text-center flex flex-col gap-3 text-sky-50 text-lg font-bold rounded-lg justify-center items-center";
 
     let algClass = "bg-sky-400 py-0.5 px-3 w-fit rounded-full"
@@ -12,58 +12,58 @@ function ControlPanel({ onRunStep }) {
                     Grid Generators
                 </div>
                 <button
-                    onClick={() => onRunStep("OpenGrid")}
+                    onClick={() => onRunAlgo("OpenGrid")}
                     className={algClass}
                 >
                     Open
                 </button>
-                <button
-                    onClick={() => onRunStep("DFSGrid")}
+                {/* <button
+                    onClick={() => onRunAlgo("DFSGrid")}
                     className={algClass}
                 >
                     DFS
                 </button>
                 <button
-                    onClick={() => onRunStep("PrimsGrid")}
+                    onClick={() => onRunAlgo("PrimsGrid")}
                     className={algClass}
                 >
                     Prim's
-                </button>
+                </button> */}
             </div>
             <div className={`${cardClass}`}>
                 <div className="">
                     Pathfinders
                 </div>
-                <button
-                    onClick={() => onRunStep("DFSPF")}
+                {/* <button
+                    onClick={() => onRunAlgo("DFSPF")}
                     className={algClass}
                 >
                     DFS
                 </button>
                 <button
-                    onClick={() => onRunStep("BFSPF")}
+                    onClick={() => onRunAlgo("BFSPF")}
                     className={algClass}
                 >
                     BFS
                 </button>
                 <button
-                    onClick={() => onRunStep("AStarPF")}
+                    onClick={() => onRunAlgo("AStarPF")}
                     className={algClass}
                 >
                     A*
                 </button>
                 <button
-                    onClick={() => onRunStep("SHPBFSPF")}
+                    onClick={() => onRunAlgo("SHPBFSPF")}
                     className={algClass}
                 >
                     SHP BFS
                 </button>
                 <button
-                    onClick={() => onRunStep("SHPAStarPF")}
+                    onClick={() => onRunAlgo("SHPAStarPF")}
                     className={algClass}
                 >
                     SHP A*
-                </button>
+                </button> */}
             </div>
         </div>
     )

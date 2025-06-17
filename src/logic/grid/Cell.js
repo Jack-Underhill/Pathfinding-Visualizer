@@ -1,5 +1,7 @@
-export class Cell {
-    constructor(row, col, type = "empty") {
+import { CellType } from "./CellTypes"
+
+export default class Cell {
+    constructor(row, col, type = CellType.EMPTY) {
         this.row = row
         this.col = col
         this.type = type
@@ -11,10 +13,8 @@ export class Cell {
     reset() {
         this.visited = false
         this.parent = null
-        if(this.type !== "wall" && this.type !== "start" && this.type != "end") {
-            this.type = "empty"
+        if(this.type !== CellType.WALL && this.type !== CellType.START && this.type != CellType.END) {
+            this.type = CellType.EMPTY
         }
     }
 }
-
-export default new Cell;

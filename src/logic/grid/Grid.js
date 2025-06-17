@@ -6,7 +6,7 @@ export class Grid
     {
         this.rows = rows
         this.cols = cols
-        this.grid = this._createGrid
+        this.grid = this._createGrid()
     }
 
     _createGrid() 

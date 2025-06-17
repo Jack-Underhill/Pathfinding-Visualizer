@@ -1,35 +1,68 @@
-import { useState } from 'react'
-// import { Grid } from "./logic/grid/Grid"
-// import { Algorithms } from "./logic/Algorithms/Alg"
-import CanvasGrid from "./components/CanvasGrid"
-import ControlPanel from "./components/ControlPanel"
-// import Alg from './logic/Algorithms/Alg'
+import { useState } from 'react';
+import { Grid } from "./logic/grid/Grid";
+import { GridOpen } from "./logic/Algorithms/maze/GridOpen";
+import CanvasGrid from "./components/CanvasGrid";
+import ControlPanel from "./components/ControlPanel";
 
 function App() {
-  // const [grid, setGrid] = useState(new Grid(25, 25))
+  const [grid, setGrid] = useState(new Grid(25, 25));
+  const [running, setRunning] = useState(false);
+  const speed = 5;
 
-  const handleRunStep = (algoName) => {
-    // if(algoName === "OpenGrid") {
-    //   Alg.OpenGrid(grid)
-    // } else if(algoName === "DFSGrid") {
-    //   Alg.DFSGrid(grid)
-    // } else if(algoName === "PrimsGrid") {
-    //   Alg.PrimsGrid(grid)
-    // } else if(algoName === "DFSPF") {
-    //   Alg.DFSPF(grid)
-    // } else if(algoName === "BFSPF") {
-    //   Alg.BFSPF(grid)
-    // } else if(algoName === "AStarPF") {
-    //   Alg.AStarPF(grid)
-    // } else if(algoName === "SHPBFSPF") {
-    //   Alg.SHPBFSPF(grid)
-    // } else if(algoName === "SHPAStarPF") {
-    //   Alg.SHPAStarPF(grid)
-    // }
+  const runAlgo = (algo) => {
+    if(!algo || algo.isDone()) {
+      setRunning(false);
+      return;
+    }
+
+    algo.step();
+    setGrid(Object.assign(Object.create(Object.getPrototypeOf(grid)), grid));
+    setTimeout(() => runAlgo(algo), speed);
+  }
+
+  const startAlgo = (algoName) => {
+    if(!running) {
+      grid.resetGrid();
+      let algo;
+      
+      switch(algoName) {
+        case "OpenGrid":
+          algo = new GridOpen(grid);
+          break;
+        // case "DFSGrid":
+        //   setAlgorithm(new GridDFS(grid));
+        //   break;
+        // case "PrimsGrid":
+        //   setAlgorithm(new GridPrims(grid));
+        //   break;
+        // case "DFSPF":
+        //   setAlgorithm(new PFDFS(grid));
+        //   break;
+        // case "BFSPF":
+        //   setAlgorithm(new PFBFS(grid));
+        //   break;
+        // case "AStarPF":
+        //   setAlgorithm(new PFAStar(grid));
+        //   break;
+        // case "SHPBFSPF":
+        //   setAlgorithm(new PFSHPBFS(grid));
+        //   break;
+        // case "SHPAStarPF":
+        //   setAlgorithm(new PFSHPAStar(grid));
+        //   break;
+        default:
+          console.log("Input algorithm does not exist!");
+          setRunning(false);
+          return
+      }
+  
+      setRunning(true);
+      runAlgo(algo);
+    }
   }
 
   return (
-    <div className='p-10 min-h-screen bg-background flex gap-10'>
+    <div className='p-10 min-h-screen bg-background flex justify-center items-center gap-10'>
       <div className="flex flex-col justify-center items-center gap-10">
         <div className="text-sky-400 text-3xl font-bold">
           Pathfinding Visualizer
@@ -37,10 +70,10 @@ function App() {
         <div className="text-sky-200 text-xl font-bold">
           Vite · React · TailwindCSS · Netlify
         </div>
-        <CanvasGrid />
+        <CanvasGrid grid={grid}/>
       </div>
       <div className="w-fit h-auto">
-        <ControlPanel onRunStep={handleRunStep} />
+        <ControlPanel onRunAlgo={startAlgo} />
       </div>
     </div>
   )
