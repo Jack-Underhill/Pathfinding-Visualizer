@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Grid } from "./logic/grid/Grid";
 import { GridOpen } from "./logic/Algorithms/maze/GridOpen";
 import CanvasGrid from "./components/CanvasGrid";
@@ -7,7 +7,8 @@ import ControlPanel from "./components/ControlPanel";
 function App() {
   const [grid, setGrid] = useState(new Grid(25, 25));
   const [running, setRunning] = useState(false);
-  const speed = 5;
+  const [speed, setSpeed] = useState(100);
+  const speedRef = useRef(speed);
 
   const runAlgo = (algo) => {
     if(!algo || algo.isDone()) {
@@ -17,7 +18,7 @@ function App() {
 
     algo.step();
     setGrid(Object.assign(Object.create(Object.getPrototypeOf(grid)), grid));
-    setTimeout(() => runAlgo(algo), speed);
+    setTimeout(() => runAlgo(algo), speedRef.current);
   }
 
   const startAlgo = (algoName) => {
@@ -61,6 +62,10 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    speedRef.current = speed;
+  }, [speed]);
+
   return (
     <div className='p-10 min-h-screen bg-background flex justify-center items-center gap-10'>
       <div className="flex flex-col justify-center items-center gap-10">
@@ -73,7 +78,7 @@ function App() {
         <CanvasGrid grid={grid}/>
       </div>
       <div className="w-fit h-auto">
-        <ControlPanel onRunAlgo={startAlgo} />
+        <ControlPanel onRunAlgo={startAlgo} onSpeedChange={setSpeed} speed={speed} />
       </div>
     </div>
   )
