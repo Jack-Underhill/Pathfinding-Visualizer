@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Grid } from "./logic/grid/Grid";
 import { GridOpen } from "./logic/Algorithms/maze/GridOpen";
+import { PFDFS } from './logic/Algorithms/pathfind/PFDFS';
 import CanvasGrid from "./components/CanvasGrid";
 import ControlPanel from "./components/ControlPanel";
 
@@ -23,11 +24,11 @@ function App() {
 
   const startAlgo = (algoName) => {
     if(!running) {
-      grid.resetGrid();
       let algo;
       
       switch(algoName) {
         case "OpenGrid":
+          grid.resetGrid();
           algo = new GridOpen(grid);
           break;
         // case "DFSGrid":
@@ -36,9 +37,10 @@ function App() {
         // case "PrimsGrid":
         //   setAlgorithm(new GridPrims(grid));
         //   break;
-        // case "DFSPF":
-        //   setAlgorithm(new PFDFS(grid));
-        //   break;
+        case "DFSPF":
+          grid.resetPF();
+          algo = new PFDFS(grid);
+          break;
         // case "BFSPF":
         //   setAlgorithm(new PFBFS(grid));
         //   break;

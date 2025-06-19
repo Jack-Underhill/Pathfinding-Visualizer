@@ -36,7 +36,7 @@ function CanvasGrid({ grid }) {
                 ctx.fillStyle = '#161C24';
                 break;
             case CellType.GENERATION:
-                ctx.fillStyle = '#A4273B';
+                ctx.fillStyle = '#B8E6FE';
                 break;
             case CellType.START:
                 ctx.fillStyle = '#0CBA0C';
@@ -48,10 +48,10 @@ function CanvasGrid({ grid }) {
                 ctx.fillStyle = '#FFE608';
                 break;
             case CellType.VISITED:
-                ctx.fillStyle = '#08FFFF';
+                ctx.fillStyle = '#00598A';
                 break;
             case CellType.PATH:
-                ctx.fillStyle = '#080BA6';
+                ctx.fillStyle = '#00BCFF';
                 break;
             case CellType.NEXT:
                 ctx.fillStyle = '#BEDFF7';

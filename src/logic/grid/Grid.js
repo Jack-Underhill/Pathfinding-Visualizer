@@ -6,6 +6,8 @@ export class Grid
     {
         this.rows = rows
         this.cols = cols
+        this.start = null
+        this.end = null
         this.grid = this._createGrid()
     }
 
@@ -48,6 +50,17 @@ export class Grid
             for(let cell of row) 
             {
                 cell.reset()
+            }
+        }
+    }
+
+    resetPF()
+    {
+        for(let row of this.grid) 
+        {
+            for(let cell of row) 
+            {
+                cell.clear()
             }
         }
     }

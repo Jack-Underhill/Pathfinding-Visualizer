@@ -13,8 +13,14 @@ export default class Cell {
     reset() {
         this.visited = false
         this.parent = null
+        this.type = CellType.EMPTY
+    }
+
+    clear() {
+        this.visited = false
+        this.parent = null
         if(this.type !== CellType.WALL && this.type !== CellType.START && this.type != CellType.END) {
-            this.type = CellType.EMPTY
+            this.type = CellType.GENERATION
         }
     }
 }
