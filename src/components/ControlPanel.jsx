@@ -59,13 +59,13 @@ function ControlPanel({ onRunAlgo, onSpeedChange, speed }) {
                 >
                     DFS
                 </button>
-                {/* <button
+                <button
                     onClick={() => onRunAlgo("BFSPF")}
                     className={algClass}
                 >
                     BFS
                 </button>
-                <button
+                {/* <button
                     onClick={() => onRunAlgo("AStarPF")}
                     className={algClass}
                 >

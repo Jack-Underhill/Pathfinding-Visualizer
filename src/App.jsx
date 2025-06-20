@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Grid } from "./logic/grid/Grid";
 import { GridOpen } from "./logic/Algorithms/maze/GridOpen";
 import { PFDFS } from './logic/Algorithms/pathfind/PFDFS';
+import { PFBFS } from './logic/Algorithms/pathfind/PFBFS';
 import CanvasGrid from "./components/CanvasGrid";
 import ControlPanel from "./components/ControlPanel";
 
@@ -41,9 +42,10 @@ function App() {
           grid.resetPF();
           algo = new PFDFS(grid);
           break;
-        // case "BFSPF":
-        //   setAlgorithm(new PFBFS(grid));
-        //   break;
+        case "BFSPF":
+          grid.resetPF();
+          algo = new PFBFS(grid);
+          break;
         // case "AStarPF":
         //   setAlgorithm(new PFAStar(grid));
         //   break;
