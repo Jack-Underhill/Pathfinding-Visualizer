@@ -77,7 +77,7 @@ function App() {
         <div className="text-sky-200 text-xl font-bold">
           Vite · React · TailwindCSS · Netlify
         </div>
-        <CanvasGrid grid={grid}/>
+        <CanvasGrid grid={grid} onReRender={setGrid}/>
       </div>
       <div className="w-fit h-auto">
         <ControlPanel onRunAlgo={startAlgo} onSpeedChange={setSpeed} speed={speed} />

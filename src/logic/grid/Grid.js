@@ -1,4 +1,5 @@
 import Cell from "./Cell"
+import { CellType } from "./CellTypes"
 
 export class Grid 
 {
@@ -8,6 +9,9 @@ export class Grid
         this.cols = cols
         this.start = null
         this.end = null
+
+        this.initMouseHandling();
+
         this.grid = this._createGrid()
     }
 
@@ -28,6 +32,12 @@ export class Grid
         }
 
         return grid
+    }
+
+    initMouseHandling() 
+    {
+        this.isDragging = false;
+        this.currDragged = null;
     }
 
     getCell(row, col)
@@ -63,5 +73,52 @@ export class Grid
                 cell.clear()
             }
         }
+    }
+
+    handleMouseDown(row, col)
+    {
+        const cell = this.getCell(row, col);
+
+        if(cell.type === CellType.START || 
+           cell.type === CellType.END ||
+           cell.type === CellType.CHECKPOINT) 
+        {
+            this.resetPF();
+            this.isDragging = true;
+            this.currDragged = cell;
+        }
+    }
+
+    handleMouseMove(row, col)
+    {
+        if(this.isDragging) {
+            const cell = this.getCell(row, col);
+
+            if(cell !== this.currDragged &&
+               cell.type === CellType.GENERATION) 
+            {
+                cell.type = this.currDragged.type;
+                this.currDragged.type = CellType.GENERATION;
+                this.currDragged = cell;
+
+                if(this.currDragged.type === CellType.START)
+                {
+                    this.start = this.currDragged;
+                }
+                else if(this.currDragged.type === CellType.END)
+                {
+                    this.end = this.currDragged;
+                }
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    handleMouseUp()
+    {
+        this.initMouseHandling();
     }
 }

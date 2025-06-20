@@ -34,6 +34,6 @@ export class PFDFS extends Alg {
             return;
         }
 
-        this.finalizePF(cell);
+        this.finalizePFStep(cell);
     }
 }

@@ -109,7 +109,7 @@ export class Alg
         this.setTypeToRandomCell(CellType.END);
     }
 
-    finalizePF(prevCell) {
+    finalizePFStep(prevCell) {
         const newCell = this.getCurrCell();
         newCell.parent = prevCell;
 

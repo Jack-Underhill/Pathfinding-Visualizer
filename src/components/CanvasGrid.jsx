@@ -1,9 +1,37 @@
 import { useEffect, useRef } from "react";
 import { CellType } from "../logic/grid/CellTypes";
 
-function CanvasGrid({ grid }) {
+function CanvasGrid({ grid, onReRender }) {
     const canvasRef = useRef(null);
     const cellSize = 20;
+
+    const getMousePos = (e) => {
+        const rect = canvasRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const col = Math.floor(x / cellSize);
+        const row = Math.floor(y / cellSize);
+
+        return { row, col };
+    }
+
+    const handleMouseDown = (e) => {
+        const { row, col } = getMousePos(e);
+        grid.handleMouseDown(row, col);
+    }
+
+    const handleMouseMove = (e) => {
+        const { row, col } = getMousePos(e);
+        
+        if(grid.handleMouseMove(row, col)) {
+            onReRender(Object.assign(Object.create(Object.getPrototypeOf(grid)), grid));
+        }
+    }
+
+    const handleMouseUp = () => {
+        grid.handleMouseUp();
+    }
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -71,7 +99,12 @@ function CanvasGrid({ grid }) {
 
     return (
         <div className="flex justify-center items-center">
-            <canvas ref={canvasRef}/>
+            <canvas 
+                ref={canvasRef}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+            />
         </div>
     )
 }
