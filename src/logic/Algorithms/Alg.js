@@ -31,6 +31,18 @@ export class Alg
         return this.grid.getCell(this.row, this.col);
     }
 
+    getDirection(child, parent) {
+        if(child.row < parent.row) {
+            return 0;
+        } else if(child.col < parent.col) {
+            return 1;
+        } else if(child.row > parent.row) {
+            return 2;
+        } else if(child.col > parent.col) {
+            return 3;
+        }
+    }
+
     getNeighborCell(direction) {
         let r, c;
 
@@ -76,7 +88,11 @@ export class Alg
         cell.type = type;
 
         if(type === CellType.START)
+        {
             this.grid.start = cell;
+            this.row = cell.row;
+            this.col = cell.col;
+        }
         else if(type === CellType.END)
             this.grid.end = cell;
     }
@@ -105,8 +121,8 @@ export class Alg
 
     finalizeGrid() {
         this.done = true;
-        this.setTypeToRandomCell(CellType.START);
-        this.setTypeToRandomCell(CellType.END);
+        if(!this.grid.start) this.setTypeToRandomCell(CellType.START);
+        if(!this.grid.end) this.setTypeToRandomCell(CellType.END);
     }
 
     finalizePFStep(prevCell) {

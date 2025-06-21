@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Grid } from "./logic/grid/Grid";
 import { GridOpen } from "./logic/Algorithms/maze/GridOpen";
+import { GridRandom } from "./logic/Algorithms/maze/GridRandom";
 import { PFDFS } from './logic/Algorithms/pathfind/PFDFS';
 import { PFBFS } from './logic/Algorithms/pathfind/PFBFS';
 import CanvasGrid from "./components/CanvasGrid";
@@ -32,9 +33,10 @@ function App() {
           grid.resetGrid();
           algo = new GridOpen(grid);
           break;
-        // case "DFSGrid":
-        //   setAlgorithm(new GridDFS(grid));
-        //   break;
+        case "RandomGrid":
+          grid.resetGrid();
+          algo = new GridRandom(grid);
+          break;
         // case "PrimsGrid":
         //   setAlgorithm(new GridPrims(grid));
         //   break;

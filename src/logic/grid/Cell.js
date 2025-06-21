@@ -11,9 +11,10 @@ export default class Cell {
     }
 
     reset() {
+        this.type = CellType.EMPTY
         this.visited = false
         this.parent = null
-        this.type = CellType.EMPTY
+        this.links = []
     }
 
     clear() {

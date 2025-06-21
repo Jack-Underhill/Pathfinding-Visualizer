@@ -13,6 +13,7 @@ export class Grid
         this.initMouseHandling();
 
         this.grid = this._createGrid()
+        this.isOpen = false;
     }
 
     _createGrid() 
@@ -55,11 +56,15 @@ export class Grid
 
     resetGrid() 
     {
+        this.isOpen = false;
+
         for(let row of this.grid) 
         {
             for(let cell of row) 
             {
                 cell.reset()
+                this.start = null
+                this.end = null
             }
         }
     }

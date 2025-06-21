@@ -94,7 +94,18 @@ function CanvasGrid({ grid, onReRender }) {
         ctx.fillRect(x, y, cellSize, cellSize);
 
         ctx.strokeStyle = '#161C24';
-        ctx.strokeRect(x, y, cellSize, cellSize);
+        ctx.beginPath();
+
+        if(grid.isOpen || !cell.links.includes(0))
+            ctx.moveTo(x, y), ctx.lineTo(x + cellSize, y)
+        if(grid.isOpen || !cell.links.includes(1))
+            ctx.moveTo(x, y), ctx.lineTo(x, y + cellSize)
+        if(grid.isOpen || !cell.links.includes(2))
+            ctx.moveTo(x, y + cellSize), ctx.lineTo(x + cellSize, y + cellSize)
+        if(grid.isOpen || !cell.links.includes(3))
+            ctx.moveTo(x + cellSize, y), ctx.lineTo(x + cellSize, y + cellSize)
+
+        ctx.stroke();
     }
 
     return (

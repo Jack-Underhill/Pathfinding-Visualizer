@@ -4,6 +4,7 @@ import Alg from "../Alg"
 export class GridOpen extends Alg {
     constructor(grid) {
         super(grid);
+        grid.isOpen = true;
     }
 
     step() {

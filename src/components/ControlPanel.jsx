@@ -36,13 +36,13 @@ function ControlPanel({ onRunAlgo, onSpeedChange, speed }) {
                 >
                     Open
                 </button>
-                {/* <button
-                    onClick={() => onRunAlgo("DFSGrid")}
+                <button
+                    onClick={() => onRunAlgo("RandomGrid")}
                     className={algClass}
                 >
-                    DFS
+                    Random
                 </button>
-                <button
+                {/* <button
                     onClick={() => onRunAlgo("PrimsGrid")}
                     className={algClass}
                 >
