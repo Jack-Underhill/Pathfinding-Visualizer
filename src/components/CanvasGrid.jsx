@@ -3,15 +3,17 @@ import { CellType } from "../logic/grid/CellTypes";
 
 function CanvasGrid({ grid, onReRender }) {
     const canvasRef = useRef(null);
-    const cellSize = 20;
+    const cellSizeRef = useRef(20);
 
+    const getCellSize = () => cellSizeRef.current;
+ 
     const getMousePos = (e) => {
         const rect = canvasRef.current.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        const col = Math.floor(x / cellSize);
-        const row = Math.floor(y / cellSize);
+        const col = Math.floor(x / getCellSize());
+        const row = Math.floor(y / getCellSize());
 
         return { row, col };
     }
@@ -36,28 +38,44 @@ function CanvasGrid({ grid, onReRender }) {
     useEffect(() => {
         const canvas = canvasRef.current;
         if(!canvas || !grid) return;
-        
-        const ctx = canvas.getContext("2d");
-        if(!ctx) throw new Error("Canvas 2D context is not available");
 
-        canvas.width = grid.cols * cellSize;
-        canvas.height= grid.rows * cellSize;
+        const container = canvas.parentNode;
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const resizeAndDraw = () => {
+            const containerWidth = container.clientWidth;
+            const containerHeight = container.clientHeight;
 
-        for(let r = 0; r < grid.rows; r++) {
-            for(let c = 0; c < grid.cols; c++) {
-                const cell = grid.getCell(r, c);
-                drawCell(ctx, cell);
+            const size = Math.min(containerWidth, containerHeight);
+            const cellSize = Math.floor(size / grid.cols);
+            cellSizeRef.current = cellSize;
+
+            canvas.width = grid.cols * cellSize;
+            canvas.height = grid.rows * cellSize;
+            
+            const ctx = canvas.getContext("2d");
+            if(!ctx) throw new Error("Canvas 2D context is not available");
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for(let r = 0; r < grid.rows; r++) {
+                for(let c = 0; c < grid.cols; c++) {
+                    const cell = grid.getCell(r, c);
+                    drawCell(ctx, cell);
+                }
             }
         }
+
+        const observer = new ResizeObserver(resizeAndDraw)
+        observer.observe(container);
+
+        resizeAndDraw();
+
+        return () => observer.disconnect();
     }, [grid]);
 
     const drawCell = (ctx, cell) => {
-        const x = cell.col * cellSize;
-        const y = cell.row * cellSize;
-
-        // console.log(cell);
+        const x = cell.col * getCellSize();
+        const y = cell.row * getCellSize();
 
         switch(cell.type) {
             case CellType.EMPTY:
@@ -91,32 +109,31 @@ function CanvasGrid({ grid, onReRender }) {
                 ctx.fillStyle = '#EDEDED';
         }
 
-        ctx.fillRect(x, y, cellSize, cellSize);
+        ctx.fillRect(x, y, getCellSize(), getCellSize());
 
         ctx.strokeStyle = '#161C24';
         ctx.beginPath();
 
         if(grid.isOpen || !cell.links.includes(0))
-            ctx.moveTo(x, y), ctx.lineTo(x + cellSize, y)
+            ctx.moveTo(x, y), ctx.lineTo(x + getCellSize(), y)
         if(grid.isOpen || !cell.links.includes(1))
-            ctx.moveTo(x, y), ctx.lineTo(x, y + cellSize)
+            ctx.moveTo(x, y), ctx.lineTo(x, y + getCellSize())
         if(grid.isOpen || !cell.links.includes(2))
-            ctx.moveTo(x, y + cellSize), ctx.lineTo(x + cellSize, y + cellSize)
+            ctx.moveTo(x, y + getCellSize()), ctx.lineTo(x + getCellSize(), y + getCellSize())
         if(grid.isOpen || !cell.links.includes(3))
-            ctx.moveTo(x + cellSize, y), ctx.lineTo(x + cellSize, y + cellSize)
+            ctx.moveTo(x + getCellSize(), y), ctx.lineTo(x + getCellSize(), y + getCellSize())
 
         ctx.stroke();
     }
 
     return (
-        <div className="flex justify-center items-center">
-            <canvas 
-                ref={canvasRef}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-            />
-        </div>
+        <canvas 
+            ref={canvasRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            className="w-full"
+        />
     )
 }
 

@@ -5,19 +5,18 @@ export class Grid
 {
     constructor(rows, cols) 
     {
+        this.resetGrid(rows, cols);
+    }
+
+    _createGrid(rows, cols) 
+    {
         this.rows = rows
         this.cols = cols
         this.start = null
         this.end = null
-
+        this.isOpen = false;
         this.initMouseHandling();
 
-        this.grid = this._createGrid()
-        this.isOpen = false;
-    }
-
-    _createGrid() 
-    {
         const grid = []
 
         for(let r = 0; r < this.rows; r++) 
@@ -54,19 +53,9 @@ export class Grid
         }
     }
 
-    resetGrid() 
+    resetGrid(rows, cols) 
     {
-        this.isOpen = false;
-
-        for(let row of this.grid) 
-        {
-            for(let cell of row) 
-            {
-                cell.reset()
-                this.start = null
-                this.end = null
-            }
-        }
+        this.grid = this._createGrid(rows, cols);
     }
 
     resetPF()

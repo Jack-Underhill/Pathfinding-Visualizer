@@ -8,9 +8,12 @@ import CanvasGrid from "./components/CanvasGrid";
 import ControlPanel from "./components/ControlPanel";
 
 function App() {
-  const [grid, setGrid] = useState(new Grid(25, 25));
+  const [gridSize, setGridSize] = useState(25);
+  const [grid, setGrid] = useState(new Grid(gridSize, gridSize));
   const [running, setRunning] = useState(false);
   const [speed, setSpeed] = useState(100);
+
+  const gridSizeRef = useRef(gridSize);
   const speedRef = useRef(speed);
 
   const runAlgo = (algo) => {
@@ -24,17 +27,17 @@ function App() {
     setTimeout(() => runAlgo(algo), speedRef.current);
   }
 
-  const startAlgo = (algoName) => {
+  const startAlgo = async (algoName) => {
     if(!running) {
       let algo;
       
       switch(algoName) {
         case "OpenGrid":
-          grid.resetGrid();
+          grid.resetGrid(gridSize, gridSize);
           algo = new GridOpen(grid);
           break;
         case "RandomGrid":
-          grid.resetGrid();
+          grid.resetGrid(gridSize, gridSize);
           algo = new GridRandom(grid);
           break;
         // case "PrimsGrid":
@@ -72,19 +75,33 @@ function App() {
     speedRef.current = speed;
   }, [speed]);
 
+  useEffect(() => {
+    gridSizeRef.current = gridSize;
+  }, [gridSize]);
+
   return (
-    <div className='p-10 min-h-screen bg-background flex justify-center items-center gap-10'>
-      <div className="flex flex-col justify-center items-center gap-10">
+    <div className='p-10 min-h-screen bg-background flex flex-row  justify-center items-center gap-10'>
+      <div className="flex flex-col justify-center items-center gap-10 w-full max-h-[70vh] min-w-80">
         <div className="text-sky-400 text-3xl font-bold">
           Pathfinding Visualizer
         </div>
         <div className="text-sky-200 text-xl font-bold">
           Vite · React · TailwindCSS · Netlify
         </div>
-        <CanvasGrid grid={grid} onReRender={setGrid}/>
+        <CanvasGrid 
+          grid={grid} 
+          onReRender={setGrid}
+          className="w-full"
+        />
       </div>
-      <div className="w-fit h-auto">
-        <ControlPanel onRunAlgo={startAlgo} onSpeedChange={setSpeed} speed={speed} />
+      <div className="w-fit h-auto flex  justify-center items-center ">
+        <ControlPanel
+          onRunAlgo={startAlgo}
+          onSpeedChange={setSpeed}
+          onGridSizeChange={setGridSize}
+          speed={speed}
+          gridSize={gridSize}
+        />
       </div>
     </div>
   )

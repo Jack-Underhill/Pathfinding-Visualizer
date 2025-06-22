@@ -1,11 +1,25 @@
-function ControlPanel({ onRunAlgo, onSpeedChange, speed }) {
-    let cardClass = "bg-sky-800 w-full p-5 text-center flex flex-col gap-3 text-sky-50 text-lg font-bold rounded-lg justify-center items-center";
+import { useState } from 'react';
 
-    let algClass = "bg-sky-400 py-0.5 px-3 w-fit rounded-full"
+function ControlPanel({ onRunAlgo, onSpeedChange, onGridSizeChange, speed, gridSize }) {
+    let cardClass = "bg-sky-800 w-full p-5 text-center flex flex-col gap-3 text-sky-50 text-lg font-bold rounded-lg justify-center items-center";
+    let algClass = "bg-sky-400 py-0.5 px-3 w-fit rounded-full";
+
+    const [gridCardClass, setGridCardClass] = useState(cardClass);
+    const [pfCardClass, setPFCardClass] = useState(cardClass + " hidden");
+
+    const enablePathfinders = () => {
+        setGridCardClass(cardClass + " hidden");
+        setPFCardClass(cardClass);
+    }
+    
+    const enableGrids = () => {
+        setGridCardClass(cardClass);
+        setPFCardClass(cardClass + " hidden");
+    }
     
     return (
         <div className="h-1/1 flex flex-col justify-center items-center gap-6">
-            <div className={`${cardClass}`}>
+            <div className={cardClass}>
                 <div className="">
                     Animation Speed
                 </div>
@@ -26,18 +40,40 @@ function ControlPanel({ onRunAlgo, onSpeedChange, speed }) {
                     <span>Fast</span>
                 </div>
             </div>
-            <div className={`${cardClass}`}>
+            <div className={gridCardClass}>
+                <div className="">
+                    Sizes
+                </div>
+                <div className="text-sm text-center">
+                    {gridSize}x{gridSize}
+                </div>
+                <input 
+                    type="range"
+                    min={10}
+                    max={100}
+                    value={gridSize}
+                    step={5}
+                    onChange={(e) => onGridSizeChange(Number(e.target.value))}
+                    className="w-full accent-sky-400"
+                />
+                
                 <div className="">
                     Grid Generators
                 </div>
                 <button
-                    onClick={() => onRunAlgo("OpenGrid")}
+                    onClick={() => {
+                        onRunAlgo("OpenGrid")
+                        enablePathfinders();
+                    }}
                     className={algClass}
                 >
                     Open
                 </button>
                 <button
-                    onClick={() => onRunAlgo("RandomGrid")}
+                    onClick={() => {
+                        onRunAlgo("RandomGrid")
+                        enablePathfinders();
+                    }}
                     className={algClass}
                 >
                     Random
@@ -49,7 +85,7 @@ function ControlPanel({ onRunAlgo, onSpeedChange, speed }) {
                     Prim's
                 </button> */}
             </div>
-            <div className={`${cardClass}`}>
+            <div className={pfCardClass}>
                 <div className="">
                     Pathfinders
                 </div>
@@ -83,6 +119,12 @@ function ControlPanel({ onRunAlgo, onSpeedChange, speed }) {
                 >
                     SHP A*
                 </button> */}
+                <button
+                    onClick={enableGrids}
+                    className="bg-gray-900 py-0.5 px-3 w-fit rounded-full"
+                >
+                    Back
+                </button>
             </div>
         </div>
     )
