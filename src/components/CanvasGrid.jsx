@@ -8,9 +8,14 @@ function CanvasGrid({ grid, onReRender }) {
     const getCellSize = () => cellSizeRef.current;
  
     const getMousePos = (e) => {
-        const rect = canvasRef.current.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        const canvas = canvasRef.current;
+        const rect = canvas.getBoundingClientRect();
+
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+
+        const x = (e.clientX - rect.left) * scaleX;
+        const y = (e.clientY - rect.top) * scaleY;
 
         const col = Math.floor(x / getCellSize());
         const row = Math.floor(y / getCellSize());

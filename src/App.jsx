@@ -80,8 +80,8 @@ function App() {
   }, [gridSize]);
 
   return (
-    <div className='p-10 min-h-screen bg-background flex flex-row  justify-center items-center gap-10'>
-      <div className="flex flex-col justify-center items-center gap-10 w-full max-h-[70vh] min-w-80">
+    <div className='p-10 flex min-h-screen items-center justify-center bg-background gap-10'>
+      <div className="flex flex-col items-center justify-center gap-10 w-full min-w-80 max-h-[70vh] max-w-[70vh]">
         <div className="text-sky-400 text-3xl font-bold">
           Pathfinding Visualizer
         </div>
@@ -91,7 +91,7 @@ function App() {
         <CanvasGrid 
           grid={grid} 
           onReRender={setGrid}
-          className="w-full"
+          className="h-fit"
         />
       </div>
       <div className="w-fit h-auto flex  justify-center items-center ">
