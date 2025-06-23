@@ -1,9 +1,8 @@
 import Alg from "../Alg"
-import { CellType } from "../../grid/CellTypes";
 
 export class PFBFS extends Alg {
     constructor(grid) {
-        super(grid);
+        super(grid, true);
         this.q = [];
         this.q.push(grid.start);
         this.setVisited(grid.start);
@@ -34,12 +33,22 @@ export class PFBFS extends Alg {
     
             newCell.parent = this.getCurrCell();
             
-            if(newCell.type === CellType.END) {
-                this.setPath();
-                this.done = true;
-            }
+            this.finalizePFStep(newCell);
         }
         
         return this.done;
+    }
+
+    runInstant() 
+    {
+        this.grid.resetPF();
+        this.done = false;
+        this.q = [];
+        this.q.push(this.grid.start);
+        this.setVisited(this.grid.start);
+
+        while(!this.isDone()) {
+            this.step();
+        }
     }
 }

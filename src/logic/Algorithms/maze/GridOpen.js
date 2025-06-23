@@ -3,7 +3,7 @@ import Alg from "../Alg"
 
 export class GridOpen extends Alg {
     constructor(grid) {
-        super(grid);
+        super(grid, false);
         grid.isOpen = true;
     }
 

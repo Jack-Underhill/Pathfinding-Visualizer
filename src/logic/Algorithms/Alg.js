@@ -2,11 +2,13 @@ import { CellType } from "../grid/CellTypes";
 
 export class Alg
 {
-    constructor(grid) {
+    constructor(grid, isSearchable) {
         this.grid = grid;
         this.done = false;
         this.row = 0;
         this.col = 0;
+        this.isSearchable = isSearchable;
+        this.grid.isEditable = false;
     }
 
     isDone() { return this.done; }
@@ -121,17 +123,16 @@ export class Alg
 
     finalizeGrid() {
         this.done = true;
+        this.grid.isEditable = true;
         if(!this.grid.start) this.setTypeToRandomCell(CellType.START);
         if(!this.grid.end) this.setTypeToRandomCell(CellType.END);
     }
 
-    finalizePFStep(prevCell) {
-        const newCell = this.getCurrCell();
-        newCell.parent = prevCell;
-
+    finalizePFStep(newCell) {
         if(newCell.type === CellType.END) {
             this.setPath();
             this.done = true;
+            this.grid.isEditable = true;
         }
     }
 }

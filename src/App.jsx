@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Grid } from "./logic/grid/Grid";
+import { MouseInput } from "./logic/MouseInput";
 import { GridOpen } from "./logic/Algorithms/maze/GridOpen";
 import { GridRandom } from "./logic/Algorithms/maze/GridRandom";
 import { PFDFS } from './logic/Algorithms/pathfind/PFDFS';
@@ -12,9 +13,12 @@ function App() {
   const [grid, setGrid] = useState(new Grid(gridSize, gridSize));
   const [running, setRunning] = useState(false);
   const [speed, setSpeed] = useState(100);
+  const [currPF, setCurrPF] = useState(null);
 
+  const mouseInputRef = useRef(new MouseInput(grid));
   const gridSizeRef = useRef(gridSize);
   const speedRef = useRef(speed);
+  let currPFRef = useRef(null);
 
   const runAlgo = (algo) => {
     if(!algo || algo.isDone()) {
@@ -27,6 +31,25 @@ function App() {
     setTimeout(() => runAlgo(algo), speedRef.current);
   }
 
+  let latestRunId = 0
+  const runInstantPF = useCallback(() => {
+    if(!currPFRef.current || !grid.isEditable || !currPFRef.current.isSearchable) {
+      setRunning(false);
+      return;
+    }
+
+    let runId = ++latestRunId;
+    setTimeout(() => {
+      if(runId !== latestRunId) return;
+    }, 0);
+
+    const pfInstance = currPFRef.current;
+    pfInstance.grid = grid;
+    pfInstance.runInstant();
+
+    setGrid(Object.assign(Object.create(Object.getPrototypeOf(grid)), grid));
+  }, [grid]);
+
   const startAlgo = async (algoName) => {
     if(!running) {
       let algo;
@@ -35,10 +58,12 @@ function App() {
         case "OpenGrid":
           grid.resetGrid(gridSize, gridSize);
           algo = new GridOpen(grid);
+          setCurrPF(null);
           break;
         case "RandomGrid":
           grid.resetGrid(gridSize, gridSize);
           algo = new GridRandom(grid);
+          setCurrPF(null);
           break;
         // case "PrimsGrid":
         //   setAlgorithm(new GridPrims(grid));
@@ -46,10 +71,12 @@ function App() {
         case "DFSPF":
           grid.resetPF();
           algo = new PFDFS(grid);
+          setCurrPF(algo);
           break;
         case "BFSPF":
           grid.resetPF();
           algo = new PFBFS(grid);
+          setCurrPF(algo);
           break;
         // case "AStarPF":
         //   setAlgorithm(new PFAStar(grid));
@@ -79,6 +106,14 @@ function App() {
     gridSizeRef.current = gridSize;
   }, [gridSize]);
 
+  useEffect(() => {
+    currPFRef.current = currPF;
+  }, [currPF]);
+
+  useEffect(() => {
+    mouseInputRef.current.grid = grid;
+  }, [grid]);
+
   return (
     <div className='p-10 flex min-h-screen items-center justify-center bg-background gap-10'>
       <div className="flex flex-col items-center justify-center gap-10 w-full min-w-80 max-h-[70vh] max-w-[70vh]">
@@ -90,7 +125,9 @@ function App() {
         </div>
         <CanvasGrid 
           grid={grid} 
+          mouseInput={mouseInputRef.current}
           onReRender={setGrid}
+          onCellMove={runInstantPF}
           className="h-fit"
         />
       </div>

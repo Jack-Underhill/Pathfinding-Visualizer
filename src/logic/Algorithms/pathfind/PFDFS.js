@@ -2,7 +2,7 @@ import Alg from "../Alg"
 
 export class PFDFS extends Alg {
     constructor(grid) {
-        super(grid);
+        super(grid, true);
         this.row = grid.start.row;
         this.col = grid.start.col;
     }
@@ -34,6 +34,21 @@ export class PFDFS extends Alg {
             return;
         }
 
-        this.finalizePFStep(cell);
+        const newCell = this.getCurrCell();
+        newCell.parent = cell;
+
+        this.finalizePFStep(newCell);
+    }
+
+    runInstant() 
+    {
+        this.grid.resetPF();
+        this.done = false;
+        this.row = this.grid.start.row;
+        this.col = this.grid.start.col;
+
+        while(!this.isDone()) {
+            this.step();
+        }
     }
 }

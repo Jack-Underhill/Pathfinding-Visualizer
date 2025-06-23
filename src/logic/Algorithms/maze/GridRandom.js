@@ -3,7 +3,7 @@ import Alg from "../Alg"
 
 export class GridRandom extends Alg {
     constructor(grid) {
-        super(grid);
+        super(grid, false);
         this.setTypeToRandomCell(CellType.START);
     }
 

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { CellType } from "../logic/grid/CellTypes";
 
-function CanvasGrid({ grid, onReRender }) {
+function CanvasGrid({ grid, mouseInput, onReRender, onCellMove }) {
     const canvasRef = useRef(null);
     const cellSizeRef = useRef(20);
 
@@ -25,19 +25,20 @@ function CanvasGrid({ grid, onReRender }) {
 
     const handleMouseDown = (e) => {
         const { row, col } = getMousePos(e);
-        grid.handleMouseDown(row, col);
+        mouseInput.down(row, col);
     }
 
     const handleMouseMove = (e) => {
         const { row, col } = getMousePos(e);
         
-        if(grid.handleMouseMove(row, col)) {
+        if(mouseInput.move(row, col)) {
             onReRender(Object.assign(Object.create(Object.getPrototypeOf(grid)), grid));
+            if(onCellMove) onCellMove();
         }
     }
 
     const handleMouseUp = () => {
-        grid.handleMouseUp();
+        mouseInput.up();
     }
 
     useEffect(() => {
