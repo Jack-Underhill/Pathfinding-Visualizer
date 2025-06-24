@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function ControlPanel({ onRunAlgo, onSpeedChange, onGridSizeChange, speed, gridSize }) {
+function ControlPanel({ onRunAlgo, onSpeedChange, onGridSizeChange, speed, gridSize, visitedCells, pathCells, runtime }) {
     let cardClass = "bg-sky-800 w-full p-5 text-center flex flex-col gap-3 text-sky-50 text-lg font-bold rounded-lg justify-center items-center";
     let algClass = "bg-sky-400 py-0.5 px-3 w-fit rounded-full";
 
@@ -15,6 +15,14 @@ function ControlPanel({ onRunAlgo, onSpeedChange, onGridSizeChange, speed, gridS
     const enableGrids = () => {
         setGridCardClass(cardClass);
         setPFCardClass(cardClass + " hidden");
+    }
+
+    const getRunTime = () => {
+        if(runtime >= 1000) {
+            return ((runtime / 1000).toFixed(4) + " s");
+        } else {
+            return (runtime.toFixed(2) + " ms");
+        }
     }
     
     return (
@@ -125,6 +133,20 @@ function ControlPanel({ onRunAlgo, onSpeedChange, onGridSizeChange, speed, gridS
                 >
                     Back
                 </button>
+            </div>
+            <div className={pfCardClass}>
+                <div className="">
+                    Statistics
+                </div>
+                <div className="text-sm text-center">
+                    Visited Cells: {visitedCells}
+                </div>
+                <div className="text-sm text-center">
+                    Path Cells: {pathCells}
+                </div>
+                <div className="text-sm text-center">
+                    Runtime: {getRunTime()}
+                </div>
             </div>
         </div>
     )

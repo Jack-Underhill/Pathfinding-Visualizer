@@ -9,6 +9,15 @@ export class Alg
         this.col = 0;
         this.isSearchable = isSearchable;
         this.grid.isEditable = false;
+
+        this.initStats();
+    }
+
+    initStats() {
+        this.visitedCount = 0;
+        this.pathCount = 0;
+        this.runTime = 0;
+        this.startTime = performance.now();
     }
 
     isDone() { return this.done; }
@@ -103,6 +112,8 @@ export class Alg
         let cell = this.grid.end;
         while(cell.parent)
         {
+            this.pathCount++;
+
             if(cell.type != CellType.START && cell.type != CellType.END)
             {
                 cell.type = CellType.PATH;
@@ -114,16 +125,20 @@ export class Alg
 
     setVisited(cell) {
         cell.visited = true;
+        this.visitedCount++;
 
-        if(cell.type === CellType.GENERATION)
-        {
-            cell.type = CellType.VISITED;
+        if(cell.type === CellType.GENERATION) { 
+            cell.type = CellType.VISITED; 
         }
     }
 
-    finalizeGrid() {
+    finalizeAlg() {
         this.done = true;
         this.grid.isEditable = true;
+    }
+
+    finalizeGrid() {
+        this.finalizeAlg();
         if(!this.grid.start) this.setTypeToRandomCell(CellType.START);
         if(!this.grid.end) this.setTypeToRandomCell(CellType.END);
     }
@@ -131,8 +146,8 @@ export class Alg
     finalizePFStep(newCell) {
         if(newCell.type === CellType.END) {
             this.setPath();
-            this.done = true;
-            this.grid.isEditable = true;
+            this.finalizeAlg();
+            this.runTime += performance.now() - this.startTime;
         }
     }
 }

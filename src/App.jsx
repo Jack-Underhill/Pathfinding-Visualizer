@@ -14,44 +14,35 @@ function App() {
   const [running, setRunning] = useState(false);
   const [speed, setSpeed] = useState(100);
   const [currPF, setCurrPF] = useState(null);
+  const [visitedStat, setVisitedStat] = useState(0);
+  const [pathStat, setPathStat] = useState(0);
+  const [runtimeStat, setRuntimeStat] = useState(0);
 
   const mouseInputRef = useRef(new MouseInput(grid));
   const gridSizeRef = useRef(gridSize);
   const speedRef = useRef(speed);
+  const visitedStatRef = useRef(visitedStat);
+  const pathStatRef = useRef(pathStat);
+  const runtimeStatRef = useRef(runtimeStat);
   let currPFRef = useRef(null);
 
   const runAlgo = (algo) => {
     if(!algo || algo.isDone()) {
+      updatePFStats();
       setRunning(false);
       return;
     }
 
     algo.step();
+
     setGrid(Object.assign(Object.create(Object.getPrototypeOf(grid)), grid));
     setTimeout(() => runAlgo(algo), speedRef.current);
   }
 
-  let latestRunId = 0
-  const runInstantPF = useCallback(() => {
-    if(!currPFRef.current || !grid.isEditable || !currPFRef.current.isSearchable) {
-      setRunning(false);
-      return;
-    }
-
-    let runId = ++latestRunId;
-    setTimeout(() => {
-      if(runId !== latestRunId) return;
-    }, 0);
-
-    const pfInstance = currPFRef.current;
-    pfInstance.grid = grid;
-    pfInstance.runInstant();
-
-    setGrid(Object.assign(Object.create(Object.getPrototypeOf(grid)), grid));
-  }, [grid]);
-
   const startAlgo = async (algoName) => {
     if(!running) {
+      setVisitedStat(0);
+      setPathStat(0);
       let algo;
       
       switch(algoName) {
@@ -98,6 +89,35 @@ function App() {
     }
   }
 
+  let latestRunId = 0
+  const runInstantPF = useCallback(() => {
+    if(!currPFRef.current || !grid.isEditable || !currPFRef.current.isSearchable) {
+      setRunning(false);
+      return;
+    }
+
+    let runId = ++latestRunId;
+    setTimeout(() => {
+      if(runId !== latestRunId) return;
+    }, 0);
+
+    const pfInstance = currPFRef.current;
+    pfInstance.grid = grid;
+    pfInstance.runInstant();
+
+    setGrid(Object.assign(Object.create(Object.getPrototypeOf(grid)), grid));
+    updatePFStats();
+  }, [grid]);
+
+  const updatePFStats = () => {
+    const pf = currPFRef.current;
+    if(!pf) return;
+
+    setVisitedStat(pf.visitedCount);
+    setPathStat(pf.pathCount);
+    setRuntimeStat(pf.runTime);
+  };
+
   useEffect(() => {
     speedRef.current = speed;
   }, [speed]);
@@ -105,6 +125,18 @@ function App() {
   useEffect(() => {
     gridSizeRef.current = gridSize;
   }, [gridSize]);
+
+  useEffect(() => {
+    visitedStatRef.current = visitedStat;
+  }, [visitedStat]);
+
+  useEffect(() => {
+    pathStatRef.current = pathStat;
+  }, [pathStat]);
+
+  useEffect(() => {
+    runtimeStatRef.current = runtimeStat;
+  }, [runtimeStat]);
 
   useEffect(() => {
     currPFRef.current = currPF;
@@ -138,6 +170,9 @@ function App() {
           onGridSizeChange={setGridSize}
           speed={speed}
           gridSize={gridSize}
+          visitedCells={visitedStat} 
+          pathCells={pathStat}
+          runtime={runtimeStat}
         />
       </div>
     </div>

@@ -3,8 +3,12 @@ import Alg from "../Alg"
 export class PFDFS extends Alg {
     constructor(grid) {
         super(grid, true);
-        this.row = grid.start.row;
-        this.col = grid.start.col;
+        this.initDFS();
+    }
+
+    initDFS() {
+        this.row = this.grid.start.row;
+        this.col = this.grid.start.col;
     }
 
     step() {
@@ -43,9 +47,10 @@ export class PFDFS extends Alg {
     runInstant() 
     {
         this.grid.resetPF();
+        this.initStats();
         this.done = false;
-        this.row = this.grid.start.row;
-        this.col = this.grid.start.col;
+
+        this.initDFS();
 
         while(!this.isDone()) {
             this.step();

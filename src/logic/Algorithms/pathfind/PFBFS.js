@@ -3,9 +3,14 @@ import Alg from "../Alg"
 export class PFBFS extends Alg {
     constructor(grid) {
         super(grid, true);
+        this.initBFS();
+    }
+
+    initBFS() {
         this.q = [];
-        this.q.push(grid.start);
-        this.setVisited(grid.start);
+        this.q.push(this.grid.start);
+        this.setVisited(this.grid.start);
+        this.visitedCount--;
     }
 
     step() {
@@ -42,10 +47,10 @@ export class PFBFS extends Alg {
     runInstant() 
     {
         this.grid.resetPF();
+        this.initStats();
         this.done = false;
-        this.q = [];
-        this.q.push(this.grid.start);
-        this.setVisited(this.grid.start);
+
+        this.initBFS();
 
         while(!this.isDone()) {
             this.step();

@@ -12,8 +12,11 @@ export class GridRandom extends Alg {
         
         if(cell) {
             cell.visited = true;
-            if(cell.type === CellType.EMPTY)
-                cell.type = CellType.GENERATION;
+            this.visitedCount++;
+
+            if(cell.type === CellType.EMPTY) {
+                cell.type = CellType.GENERATION; 
+            }
 
             let availableDirs = this.getWalkableDirections();
 
