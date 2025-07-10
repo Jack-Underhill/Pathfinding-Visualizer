@@ -5,13 +5,13 @@ import clicks from '../assets/clicks.svg'
 function VisitCount() {
   const [visitCount, setVisitCount] = useState(null);
 
-  // useEffect(() => {
-  //   fetch('/.netlify/functions/track-visit')
-  //   .then(res => res.json())
-  //   .then(data => {
-  //     setVisitCount(data.count);
-  //   });
-  // }, []);
+  useEffect(() => {
+    fetch('/.netlify/functions/track-visit')
+    .then(res => res.json())
+    .then(data => {
+      setVisitCount(data.count);
+    });
+  }, []);
 
   return (
       <div 
