@@ -13,6 +13,9 @@ export class PFBFS extends Alg {
         this.visitedCount--;
     }
 
+    static id = "Breadth First Search";
+    getName() { return PFBFS.id }
+
     step() {
         let cell = this.q.shift();
         this.row = cell.row;

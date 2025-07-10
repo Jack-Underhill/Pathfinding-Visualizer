@@ -6,6 +6,9 @@ export class GridOpen extends Alg {
         super(grid, false);
         grid.isOpen = true;
     }
+    
+    static id = "Open Grid";
+    getName() { return GridOpen.id }
 
     step() {
         const cell = this.getCurrCell();

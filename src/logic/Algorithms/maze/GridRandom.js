@@ -7,6 +7,9 @@ export class GridRandom extends Alg {
         this.setTypeToRandomCell(CellType.START);
     }
 
+    static id = "Random Grid";
+    getName() { return GridRandom.id }
+
     step() {
         let cell = this.getCurrCell();
         

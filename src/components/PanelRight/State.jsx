@@ -2,8 +2,8 @@
 
 function State({ isRunning, currGrid, currPF }) {
     const getStateName = () => {
-        const gridName = currGrid?.constructor?.name;
-        const pfName = currPF?.constructor?.name;
+        const gridName = currGrid?.getName?.();
+        const pfName = currPF?.getName?.();
 
         if(gridName && pfName) 
             return `${gridName} + ${pfName}`;

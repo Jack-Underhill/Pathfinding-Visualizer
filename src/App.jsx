@@ -118,8 +118,8 @@ function App() {
   };
   
   const fetchRuns = async () => {
-    const algoName = currPFRef.current?.constructor?.name;
-    const gridName = currGridRef.current?.constructor?.name;
+    const algoName = currPFRef.current?.getName?.();
+    const gridName = currGridRef.current?.getName?.();
     if(!algoName || !gridName) return;
 
     try {
@@ -193,8 +193,8 @@ function App() {
 
     if(pf.isSearchable && shouldPost) {
       postRun({
-        grid: gr.constructor.name,
-        algorithm: pf.constructor.name,
+        grid: gr.getName(),
+        algorithm: pf.getName(),
         visited_steps: visited,
         path_steps: path,
         runtime_ms: runtime,

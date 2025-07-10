@@ -11,6 +11,9 @@ export class PFDFS extends Alg {
         this.col = this.grid.start.col;
     }
 
+    static id = "Depth First Search";
+    getName() { return PFDFS.id }
+
     step() {
         let cell = this.getCurrCell();
         this.setVisited(cell);
