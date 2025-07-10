@@ -138,7 +138,7 @@ function CanvasGrid({ grid, mouseInput, onReRender, onCellMove }) {
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
-            className="w-full"
+            className="w-auto"
         />
     )
 }
