@@ -2,7 +2,7 @@
 
 Welcome to the **Pathfinding Visualizer** — a sleek, futuristic web app that brings pathfinding algorithms and maze generation to life. Built with **Vite**, **React**, and **Tailwind CSS**, the visualizer showcases algorithm performance and usability in a gamified dashboard experience.
 
-![screenshot](./assets/screenshot.PNG)
+![screenshot](./src/assets/screenshot.PNG)
 
 ---
 
