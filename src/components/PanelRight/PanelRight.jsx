@@ -29,22 +29,19 @@ function useStableChartData(data, xKey, yKey) {
 }
 
 const PanelRight = React.memo(function PanelRight({ isRunning, currGrid, currPF, recentRuns }) {
-    const card = 'rounded-2xl';
-    const sectionCard = 'h-full flex flex-col gap-5 overflow-hidden bg-sky-800 ' + card;
-
     const timeEfficiencyData = useStableChartData(recentRuns, 'path_steps', 'runtime_ms', 'path_steps');
     const exploreEfficiencyData = useStableChartData(recentRuns, 'grid_size', 'visited_steps', 'grid_size');
     
     return (
         <>
-            <div className={`${sectionCard} flex-1/6`}>
+            <div className={`flex-1/6`}>
                 <State 
                     isRunning={isRunning}
                     currGrid={currGrid}
                     currPF={currPF}
                 />
             </div>
-            <div className={`${sectionCard} flex-5/12`}>
+            <div className={`flex-5/12`}>
                 <GraphCard 
                     title="Time Efficiency"
                     data={timeEfficiencyData}
@@ -52,7 +49,7 @@ const PanelRight = React.memo(function PanelRight({ isRunning, currGrid, currPF,
                     yLabel="Runtime (ms)"
                 />
             </div>
-            <div className={`${sectionCard} flex-5/12`}>
+            <div className={`flex-5/12`}>
                 <GraphCard 
                     title="Explore Efficiency"
                     data={exploreEfficiencyData}

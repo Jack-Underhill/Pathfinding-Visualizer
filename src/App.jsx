@@ -9,7 +9,6 @@ import { PFBFS } from './logic/Algorithms/pathfind/PFBFS';
 
 import CanvasGrid from "./components/CanvasGrid";
 import NavBar from './components/NavBar';
-
 import PanelRight from './components/PanelRight/PanelRight';
 import PanelLeft from './components/PanelLeft/PanelLeft';
 
@@ -185,11 +184,7 @@ function App() {
 
     const visited = pf.visitedCount;
     const path = pf.pathCount;
-    const runtime = await getHeadlessRuntime(pf, grid);
-
-    setVisitedStat(visited);
-    setPathStat(path);
-    setRuntimeStat(runtime);
+    const runtime = shouldPost ? await getHeadlessRuntime(pf, grid) : pf.runTime;
 
     if(pf.isSearchable && shouldPost) {
       postRun({
@@ -201,6 +196,10 @@ function App() {
         grid_size: gridSizeRef.current * gridSizeRef.current,
       });
     }
+
+    setVisitedStat(visited);
+    setPathStat(path);
+    setRuntimeStat(runtime);
   };
 
   useEffect(() => {
@@ -239,15 +238,15 @@ function App() {
     mouseInputRef.current.grid = grid;
   }, [grid]);
 
-  const card = 'rounded-2xl';
-  const containerCard = ' ' + card;
-
   return (
-    <div className='p-8 h-screen flex flex-col gap-5'>
+    <div 
+      className='p-10 h-screen flex flex-col gap-10 bg-cover bg-center'
+      style={{ backgroundImage: "url('/bg_starry-grid.png')" }}
+    >
       <NavBar />
 
-      <div className='h-full flex-1 flex gap-5 items-center justify-center bg-background'>
-        <div className={`${containerCard} h-full flex-1/5`}>
+      <div className='h-full flex-1 flex gap-5 items-center justify-center'>
+        <div className={`h-full rounded-2xl flex-1/5`}>
             <PanelLeft
               onRunAlgo={startAlgo}
               onSpeedChange={setSpeed}
@@ -259,8 +258,8 @@ function App() {
               runtime={runtimeStat}
             />
         </div>
-        <div className={`${containerCard} h-full flex-1/2 flex flex-col gap-6`}>
-          <div className="text-center p-2 flex justify-center text-5xl font-bold text-sky-400">
+        <div className={`h-full rounded-2xl flex-1/2 flex flex-col justify-between gap-6`}>
+          <div className="text-center p-0 flex justify-center text-5xl font-bold text-sky-400">
             Pathfinding Visualizer
           </div>
           <div className='flex h-[75vh] items-center justify-center'>
@@ -273,7 +272,7 @@ function App() {
             />
           </div>
         </div>
-        <div className={`${containerCard} h-full flex-1/3 flex flex-col gap-3`}>
+        <div className={`h-full rounded-2xl flex-1/3 flex flex-col gap-5`}>
             <PanelRight 
               isRunning={running}
               currGrid={currGrid}

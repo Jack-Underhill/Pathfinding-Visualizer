@@ -1,4 +1,4 @@
-
+import CardWrapper from "../CardWrapper";
 
 function State({ isRunning, currGrid, currPF }) {
     const getStateName = () => {
@@ -22,14 +22,14 @@ function State({ isRunning, currGrid, currPF }) {
     }
     
     return (
-        <>
+        <CardWrapper className='w-full h-full'>
             <div className="pt-2 text-center flex justify-center text-3xl font-bold text-sky-50">
                 {getStateName()}
             </div>
             <div className="text-center flex justify-center text-4xl font-bold text-sky-50">
                 {`${getState()}`}
             </div>
-        </>
+        </CardWrapper>
     );
 }
 

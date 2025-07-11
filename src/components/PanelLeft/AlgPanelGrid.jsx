@@ -1,54 +1,58 @@
+import AlgButton from './AlgButton'
+import CardWrapper from '../CardWrapper';
 
-
-function AlgPanelGrid({ algClass, onRunAlgo, gridCardClass, enablePathfinders, onGridSizeChange, gridSize }) {
+function AlgPanelGrid({ onRunAlgo, enablePathfinders, onGridSizeChange, gridSize }) {
 
     
     return (
-        <div className={gridCardClass}>
-            <div className="">
-                Sizes
-            </div>
-            <div className="text-sm text-center">
-                {gridSize}x{gridSize}
-            </div>
-            <input 
-                type="range"
-                min={10}
-                max={100}
-                value={gridSize}
-                step={5}
-                onChange={(e) => onGridSizeChange(Number(e.target.value))}
-                className="w-full accent-sky-400"
-            />
-            
-            <div className="">
+        <CardWrapper className='w-full h-full flex flex-col justify-evenly items-center'>
+            <div className="text-2xl font-semibold">
                 Grid Generators
             </div>
-            <button
-                onClick={() => {
-                    onRunAlgo("OpenGrid")
-                    enablePathfinders();
-                }}
-                className={algClass}
-            >
-                Open
-            </button>
-            <button
-                onClick={() => {
-                    onRunAlgo("RandomGrid")
-                    enablePathfinders();
-                }}
-                className={algClass}
-            >
-                Random
-            </button>
-            {/* <button
-                onClick={() => onRunAlgo("PrimsGrid")}
-                className={algClass}
-            >
-                Prim's
-            </button> */}
-        </div>
+
+            <div className='flex flex-col items-center gap-5'>
+                <AlgButton 
+                    name="Open"
+                    functionName="OpenGrid" 
+                    onRunAlgo={onRunAlgo}
+                    enablePathfinders={enablePathfinders}
+                />
+                <AlgButton 
+                    name="Random"
+                    functionName="RandomGrid" 
+                    onRunAlgo={onRunAlgo}
+                    enablePathfinders={enablePathfinders}
+                />
+                {/* <button
+                    onClick={() => onRunAlgo("PrimsGrid")}
+                    className={algClass}
+                >
+                    Prim's
+                </button> */}
+            </div>
+
+            {/* divider */}
+            <div className='border w-6/10 border-sky-800' />
+
+            <div className="text-2xl font-semibold">
+                Sizes
+            </div>
+            
+            <div className='w-8/10'>
+                <div className="text-md text-center">
+                    {gridSize}x{gridSize}
+                </div>
+                <input 
+                    type="range"
+                    min={10}
+                    max={100}
+                    value={gridSize}
+                    step={5}
+                    onChange={(e) => onGridSizeChange(Number(e.target.value))}
+                    className="w-full accent-sky-400"
+                />
+            </div>
+        </CardWrapper>
     );
 }
 

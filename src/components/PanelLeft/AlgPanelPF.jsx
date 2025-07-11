@@ -1,25 +1,25 @@
+import AlgButton from './AlgButton'
+import CardWrapper from '../CardWrapper';
 
-
-function AlgPanelPF({ algClass, onRunAlgo, pfCardClass, enableGrids }) {
+function AlgPanelPF({ onRunAlgo, enableGrids }) {
 
     
     return (
-        <div className={pfCardClass}>
-            <div className="">
+        <CardWrapper className='w-full h-full flex flex-col justify-evenly items-center'>
+            <div className="text-2xl font-semibold">
                 Pathfinders
             </div>
-            <button
-                onClick={() => onRunAlgo("DFSPF")}
-                className={algClass}
-            >
-                DFS
-            </button>
-            <button
-                onClick={() => onRunAlgo("BFSPF")}
-                className={algClass}
-            >
-                BFS
-            </button>
+
+            <AlgButton 
+                name="Depth First Search"
+                functionName="DFSPF" 
+                onRunAlgo={onRunAlgo}
+            />
+            <AlgButton 
+                name="Breadth First Search"
+                functionName="BFSPF" 
+                onRunAlgo={onRunAlgo}
+            />
             {/* <button
                 onClick={() => onRunAlgo("AStarPF")}
                 className={algClass}
@@ -38,13 +38,14 @@ function AlgPanelPF({ algClass, onRunAlgo, pfCardClass, enableGrids }) {
             >
                 SHP A*
             </button> */}
+
             <button
                 onClick={enableGrids}
-                className="bg-gray-900 py-0.5 px-3 w-fit rounded-full"
+                className="py-0.5 px-3 w-[95%] rounded-sm bg-gray-900 hover:scale-110"
             >
                 Back
             </button>
-        </div>
+        </CardWrapper>
     );
 }
 
