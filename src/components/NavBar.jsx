@@ -23,7 +23,7 @@ function NavBar() {
         />
         <SocialTag 
             name="About"
-            link="https://github.com/Jack-Underhill/Pathfinding-Visualizer"
+            link="https://github.com/Jack-Underhill/Pathfinding-Visualizer/blob/main/ABOUT.md"
             icon={about}
         />
     </div>
