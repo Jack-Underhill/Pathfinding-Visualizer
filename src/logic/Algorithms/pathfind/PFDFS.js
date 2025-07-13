@@ -3,10 +3,10 @@ import Alg from "../Alg"
 export class PFDFS extends Alg {
     constructor(grid) {
         super(grid, true);
-        this.initDFS();
+        this.initPF();
     }
 
-    initDFS() {
+    initPF() {
         this.row = this.grid.start.row;
         this.col = this.grid.start.col;
     }
@@ -45,18 +45,5 @@ export class PFDFS extends Alg {
         newCell.parent = cell;
 
         this.finalizePFStep(newCell);
-    }
-
-    runInstant() 
-    {
-        this.grid.resetPF();
-        this.initStats();
-        this.done = false;
-
-        this.initDFS();
-
-        while(!this.isDone()) {
-            this.step();
-        }
     }
 }

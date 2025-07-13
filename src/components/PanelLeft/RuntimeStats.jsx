@@ -5,7 +5,7 @@ function RuntimeStats({ visitedCells, pathCells, runtime }) {
         if(runtime >= 1000) {
             return ((runtime / 1000).toFixed(4) + " s");
         } else {
-            return (runtime.toFixed(2) + " ms");
+            return (runtime.toFixed(3) + " ms");
         }
     }
     

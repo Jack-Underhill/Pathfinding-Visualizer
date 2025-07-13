@@ -2,9 +2,9 @@ import { CellType } from "./grid/CellTypes"
 
 export class MouseInput 
 {
-    constructor(grid) 
+    constructor(gridRef) 
     {
-        this.setGrid(grid);
+        this.gridRef = gridRef;
         this.initMouseHandling();
     }
 
@@ -14,21 +14,16 @@ export class MouseInput
         this.currDragged = null;
     }
 
-    setGrid(grid)
-    {
-        this.grid = grid;
-    }
-
     down(row, col)
     {
-        const cell = this.grid.getCell(row, col);
+        const cell = this.gridRef.current.getCell(row, col);
 
-        if(this.grid.isEditable && 
+        if(this.gridRef.current.isEditable && 
            (cell.type === CellType.START || 
            cell.type === CellType.END ||
            cell.type === CellType.CHECKPOINT))
         {
-            this.grid.resetPF();
+            this.gridRef.current.resetForPF();
             this.isDragging = true;
             this.currDragged = cell;
         }
@@ -37,19 +32,19 @@ export class MouseInput
     move(row, col)
     {
         if(this.isDragging) {
-            let overlapCell = this.grid.getCell(row, col);
+            let overlapCell = this.gridRef.current.getCell(row, col);
 
-            if(overlapCell !== this.currDragged) 
+            if(row !== this.currDragged.row || col !== this.currDragged.col) 
             {
                 let tempType = overlapCell.type;
                 overlapCell.type = this.currDragged.type;
                 this.currDragged.type = tempType;
 
                 // Only sets if cell's type matches
-                this.grid.setStart(this.currDragged);
-                this.grid.setStart(overlapCell);
-                this.grid.setEnd(this.currDragged);
-                this.grid.setEnd(overlapCell);
+                this.gridRef.current.setStart(this.currDragged);
+                this.gridRef.current.setStart(overlapCell);
+                this.gridRef.current.setEnd(this.currDragged);
+                this.gridRef.current.setEnd(overlapCell);
 
                 this.currDragged = overlapCell;
                 return true;

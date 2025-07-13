@@ -87,6 +87,18 @@ export class Alg
         return this.grid.getCell(randRow, randCol);
     }
 
+    runInstant()
+    {
+        this.initStats();
+        this.done = false;
+
+        this.initPF();
+
+        while(!this.isDone()) {
+            this.step();
+        }
+    }
+
     setTypeToRandomCell(type)
     {
         let cell = this.getRandCell();

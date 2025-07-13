@@ -11,7 +11,7 @@ export class GridRandom extends Alg {
     getName() { return GridRandom.id }
 
     step() {
-        let cell = this.getCurrCell();
+        const cell = this.getCurrCell();
         
         if(cell) {
             cell.visited = true;
@@ -21,14 +21,14 @@ export class GridRandom extends Alg {
                 cell.type = CellType.GENERATION; 
             }
 
-            let availableDirs = this.getWalkableDirections();
+            const availableDirs = this.getWalkableDirections();
 
             let newCell;
             if(availableDirs.length > 0) {
                 newCell = this.getRandomWalk(availableDirs);
 
-                let newDir = this.getDirection(newCell, cell);
-                let oldDir = this.getDirection(cell, newCell);
+                const newDir = this.getDirection(newCell, cell);
+                const oldDir = this.getDirection(cell, newCell);
 
                 newCell.links.push(oldDir);
                 cell.links.push(newDir);
@@ -52,7 +52,7 @@ export class GridRandom extends Alg {
     }
 
     isGeneratable(r, c) {
-        let cell = this.grid.getCell(r, c);
+        const cell = this.grid.getCell(r, c);
 
         return(cell &&
                this.isBounded(r, c) && 
@@ -60,7 +60,7 @@ export class GridRandom extends Alg {
     }
 
     getWalkableDirections() {
-        let avail = [];
+        const avail = [];
 
         if(this.isGeneratable(this.row - 1, this.col)) { avail.push(0); }
         if(this.isGeneratable(this.row, this.col - 1)) { avail.push(1); }
@@ -71,7 +71,7 @@ export class GridRandom extends Alg {
     }
 
     getRandomWalk(avail) {
-        let randDirIndex = Math.floor(Math.random() * avail.length);
+        const randDirIndex = Math.floor(Math.random() * avail.length);
         let cell = this.getNeighborCell(avail[randDirIndex]);
 
         return cell;

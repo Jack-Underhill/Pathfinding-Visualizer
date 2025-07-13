@@ -1,12 +1,12 @@
 import { useEffect, useRef } from "react";
 import { CellType } from "../logic/grid/CellTypes";
 
-function CanvasGrid({ grid, mouseInput, onReRender, onCellMove }) {
+function CanvasGrid({ gridRef, mouseInput, renderVersion, setRenderVersion, onCellMove }) {
     const canvasRef = useRef(null);
     const cellSizeRef = useRef(20);
 
     const getCellSize = () => cellSizeRef.current;
- 
+
     const getMousePos = (e) => {
         const canvas = canvasRef.current;
         const rect = canvas.getBoundingClientRect();
@@ -32,7 +32,7 @@ function CanvasGrid({ grid, mouseInput, onReRender, onCellMove }) {
         const { row, col } = getMousePos(e);
         
         if(mouseInput.move(row, col)) {
-            onReRender(Object.assign(Object.create(Object.getPrototypeOf(grid)), grid));
+            setRenderVersion(prevRender => prevRender + 1);
             if(onCellMove) onCellMove();
         }
     }
@@ -43,7 +43,7 @@ function CanvasGrid({ grid, mouseInput, onReRender, onCellMove }) {
 
     useEffect(() => {
         const canvas = canvasRef.current;
-        if(!canvas || !grid) return;
+        if(!canvas || !gridRef.current) return;
 
         const container = canvas.parentNode;
 
@@ -52,20 +52,20 @@ function CanvasGrid({ grid, mouseInput, onReRender, onCellMove }) {
             const containerHeight = container.clientHeight;
 
             const size = Math.min(containerWidth, containerHeight);
-            const cellSize = Math.floor(size / grid.cols);
+            const cellSize = Math.floor(size / gridRef.current.cols);
             cellSizeRef.current = cellSize;
 
-            canvas.width = grid.cols * cellSize;
-            canvas.height = grid.rows * cellSize;
+            canvas.width = gridRef.current.cols * cellSize;
+            canvas.height = gridRef.current.rows * cellSize;
             
             const ctx = canvas.getContext("2d");
             if(!ctx) throw new Error("Canvas 2D context is not available");
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            for(let r = 0; r < grid.rows; r++) {
-                for(let c = 0; c < grid.cols; c++) {
-                    const cell = grid.getCell(r, c);
+            for(let r = 0; r < gridRef.current.rows; r++) {
+                for(let c = 0; c < gridRef.current.cols; c++) {
+                    const cell = gridRef.current.getCell(r, c);
                     drawCell(ctx, cell);
                 }
             }
@@ -77,7 +77,7 @@ function CanvasGrid({ grid, mouseInput, onReRender, onCellMove }) {
         resizeAndDraw();
 
         return () => observer.disconnect();
-    }, [grid]);
+    }, [renderVersion]);
 
     const drawCell = (ctx, cell) => {
         const x = cell.col * getCellSize();
@@ -120,13 +120,13 @@ function CanvasGrid({ grid, mouseInput, onReRender, onCellMove }) {
         ctx.strokeStyle = '#161C24';
         ctx.beginPath();
 
-        if(grid.isOpen || !cell.links.includes(0))
+        if(gridRef.current.isOpen || !cell.links.includes(0))
             ctx.moveTo(x, y), ctx.lineTo(x + getCellSize(), y)
-        if(grid.isOpen || !cell.links.includes(1))
+        if(gridRef.current.isOpen || !cell.links.includes(1))
             ctx.moveTo(x, y), ctx.lineTo(x, y + getCellSize())
-        if(grid.isOpen || !cell.links.includes(2))
+        if(gridRef.current.isOpen || !cell.links.includes(2))
             ctx.moveTo(x, y + getCellSize()), ctx.lineTo(x + getCellSize(), y + getCellSize())
-        if(grid.isOpen || !cell.links.includes(3))
+        if(gridRef.current.isOpen || !cell.links.includes(3))
             ctx.moveTo(x + getCellSize(), y), ctx.lineTo(x + getCellSize(), y + getCellSize())
 
         ctx.stroke();

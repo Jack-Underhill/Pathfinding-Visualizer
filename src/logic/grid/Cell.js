@@ -24,4 +24,17 @@ export default class Cell {
             this.type = CellType.GENERATION
         }
     }
+
+    clone() {
+        const newCell = new Cell(this.row, this.col);
+
+        newCell.type = this.type;
+        newCell.visited = this.visited;
+        newCell.parent = this.parent;
+
+        // Shallow primitive copy
+        newCell.links = [...this.links];
+
+        return newCell;
+    }
 }

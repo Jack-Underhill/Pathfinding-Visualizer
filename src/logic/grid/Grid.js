@@ -5,7 +5,7 @@ export class Grid
 {
     constructor(rows, cols) 
     {
-        this.resetGrid(rows, cols);
+        this.resetForGridGen(rows, cols);
     }
 
     _createGrid(rows, cols) 
@@ -34,6 +34,28 @@ export class Grid
         return grid
     }
 
+    clone() {
+        const newGrid = new Grid(this.rows, this.cols);
+
+        for(let r = 0; r < this.rows; r++) {
+            for(let c = 0; c < this.cols; c++) {
+                const orig = this.grid[r][c];
+                const clone = orig.clone();
+                newGrid.grid[r][c] = clone;
+
+                if(clone.type === CellType.START) newGrid.start = clone;
+                else if(clone.type === CellType.END) newGrid.end = clone;
+            }
+        }
+        
+        newGrid.isOpen = this.isOpen;
+        newGrid.isEditable = this.isEditable;
+
+        return newGrid;
+    }
+
+    print() { console.log(this.grid); }
+
     getCell(row, col)
     {
         if(row >= 0 && row < this.rows &&
@@ -57,12 +79,12 @@ export class Grid
             this.end = cell;
     }
 
-    resetGrid(rows, cols) 
+    resetForGridGen(rows, cols) 
     {
         this.grid = this._createGrid(rows, cols);
     }
 
-    resetPF()
+    resetForPF()
     {
         for(let row of this.grid) 
         {
