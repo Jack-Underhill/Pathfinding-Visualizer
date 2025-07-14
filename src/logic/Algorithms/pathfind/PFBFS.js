@@ -17,6 +17,7 @@ export class PFBFS extends Alg {
     getName() { return PFBFS.id }
 
     step() {
+        this.stepCount++;
         let cell = this.q.shift();
         this.row = cell.row;
         this.col = cell.col;

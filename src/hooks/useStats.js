@@ -3,14 +3,17 @@ import { useEffect, useRef, useState } from 'react';
 import { getHeadlessRuntime } from '../utils/getHeadlessRuntime';
 
 export function useStats({ gridRef, gridSizeRef, currGridGenRef, currPFRef, postRun }) {
+    const [stepStat, setStepStat] = useState(0);
     const [visitedStat, setVisitedStat] = useState(0);
     const [pathStat, setPathStat] = useState(0);
     const [runtimeStat, setRuntimeStat] = useState(0);
 
+    const stepStatRef = useRef(stepStat);
     const visitedStatRef = useRef(visitedStat);
     const pathStatRef = useRef(pathStat);
     const runtimeStatRef = useRef(runtimeStat);
     
+    useEffect(() => { stepStatRef.current = stepStat; }, [stepStat]);
     useEffect(() => { visitedStatRef.current = visitedStat; }, [visitedStat]);
     useEffect(() => { pathStatRef.current = pathStat; }, [pathStat]);
     useEffect(() => { runtimeStatRef.current = runtimeStat; }, [runtimeStat]);
@@ -21,6 +24,7 @@ export function useStats({ gridRef, gridSizeRef, currGridGenRef, currPFRef, post
         const gr = currGridGenRef.current;
         if(!pf || !gr) return;
 
+        const steps = pf.stepCount;
         const visited = pf.visitedCount;
         const path = pf.pathCount;
         const runtime = shouldPost ? await getHeadlessRuntime(pf, gridRef) : pf.runTime;
@@ -36,12 +40,14 @@ export function useStats({ gridRef, gridSizeRef, currGridGenRef, currPFRef, post
             });
         }
 
+        setStepStat(steps);
         setVisitedStat(visited);
         setPathStat(path);
         setRuntimeStat(runtime);
     };
 
     return {
+        stepStat, setStepStat, stepStatRef,
         visitedStat, setVisitedStat, visitedStatRef,
         pathStat, setPathStat, pathStatRef,
         runtimeStat, setRuntimeStat, runtimeStatRef,

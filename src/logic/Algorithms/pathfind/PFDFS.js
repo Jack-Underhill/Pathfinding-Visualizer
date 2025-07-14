@@ -15,6 +15,7 @@ export class PFDFS extends Alg {
     getName() { return PFDFS.id }
 
     step() {
+        this.stepCount++;
         let cell = this.getCurrCell();
         this.setVisited(cell);
         

@@ -1,20 +1,66 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #161C24;
-  --color-code: #2FBE0D;
+  /* Cards */
+  --color-card: #002B4B; 
+  --color-card-border: rgba(255, 145, 205, 0.3);
 
-  --color-card: #181E24;
-  --color-card-border: #222832;
-  --color-card-att: #2F3742;
+  /* Neon accent palette */
+  --color-neon-blue: #00F5FF;
+  --color-neon-pink: #FF4AC9;
+  --color-accent-green: #1EF8B6;
+  --color-accent-red: #FB476D;
 
-  --color-button: #385BA2;
-  --color-button-border: #395FA7;
+  /* Grid Cells */
+  --color-grid-empty: rgba(255, 255, 255, 0.03); /* very subtle empty space */
+  --color-grid-generation: #112B33;
+  --color-grid-visited: #4bbcd3;
+  --color-grid-path: #a274c4;
+  --color-grid-start: #49ff94;
+  --color-grid-end: #ff4f4f;
+  --color-grid-cellBorder: #0F1822;
+
+  /* Typography */
+  --color-text: rgba(255, 255, 255, 0.95);
+  --color-text-dim: rgba(255, 255, 255, 0.6);
+}
+
+.neon-blue-glow {
+  box-shadow: 0 0 30px var(--color-neon-blue);
+}
+
+.neon-pink-glow {
+  box-shadow: 0 0 20px var(--color-neon-pink);
+}
+
+@keyframes moveGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.animated-gradient {
+  background-size: 200% 100%;
+  animation: moveGradient 3s reverse linear infinite;
+}
+
+.text-gradient-bluepink {
+  background-size: 200% 100%;
+  animation: moveGradient 3s reverse linear infinite;
+  @apply bg-gradient-to-r from-sky-300 via-pink-300 to-sky-300 text-transparent bg-clip-text;
+}
+
+.animated-shadow-gradient {
+  background-size: 200% 100%;
+  animation: moveGradient 3s reverse linear infinite;
+  @apply bg-gradient-to-r from-sky-400 via-emerald-50 to-sky-400 text-transparent bg-clip-text hover:scale-125 hover:pb-2 transition duration-200 ease-in-out;
 }
 
 html, body, #root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   margin: 0px;
   padding: 0px;
-  background-color: #161C24;
 }

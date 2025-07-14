@@ -22,6 +22,7 @@ export function useVisualizerLogic() {
     } = useDatabase({ currGridGenRef, currPFRef });
 
     const {
+        stepStat, setStepStat, stepStatRef,
         visitedStat, setVisitedStat, visitedStatRef,
         pathStat, setPathStat, pathStatRef,
         runtimeStat, setRuntimeStat, runtimeStatRef,
@@ -47,6 +48,7 @@ export function useVisualizerLogic() {
         speed, setSpeed, speedRef,
         startAlgo, runInstantPF,
         
+        stepStat, setStepStat, stepStatRef,
         visitedStat, setVisitedStat, visitedStatRef,
         pathStat, setPathStat, pathStatRef,
         runtimeStat, setRuntimeStat, runtimeStatRef,

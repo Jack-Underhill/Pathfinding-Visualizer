@@ -16,7 +16,7 @@ export default function GraphCard({ title, xLabel, yLabel, data, xKey = "x", yKe
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             return (
-            <div className="p-2 rounded-lg bg-[#0e1419] border border-cyan-400 text-white text-sm">
+            <div className="p-2 rounded-lg bg-[#0e1419] border border-sky-400 text-white text-sm">
                 <div>x: {label}</div>
                 <div>y: {Number(payload[0].value).toFixed(3)} </div>
             </div>
@@ -29,16 +29,16 @@ export default function GraphCard({ title, xLabel, yLabel, data, xKey = "x", yKe
     return (
         <CardWrapper className='w-full h-full'>
             <div className='w-full h-full pt-2 pl-1 pb-10 pr-4'>
-                <div className='text-center text-cyan-300 font-semibold tracking-wide text-lg mb-4'>
+                <div className='text-center text-[#FDA5D5] font-semibold tracking-wide text-lg mb-4'>
                     {title.toUpperCase()}
                 </div>
 
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={data} margin={{ bottom: 20, left: 10 }}>
                         <defs>
-                            <linearGradient id='glow' x1='0' y1='0' x2='0' y2='1'>
-                                <stop offset='0%' stopColor={gradientColor} stopOpacity={0.9} />
-                                <stop offset='100%' stopColor={gradientColor} stopOpacity={0.2} />
+                            <linearGradient id='glow' x1='0' y1='0' x2='1' y2='0'>
+                                <stop offset='0%' stopColor="#00F5FF" /> 
+                                <stop offset='100%' stopColor="#FF4AC9" />
                             </linearGradient>
                         </defs>
 
@@ -49,7 +49,7 @@ export default function GraphCard({ title, xLabel, yLabel, data, xKey = "x", yKe
                                 position="bottom"
                                 offset={0}
                                 style={{ 
-                                    fill: '#0f5ff', 
+                                    fill: '#FDA5D5', 
                                     fontSize: '1rem',
                                     textAnchor: 'middle',
                                 }}
@@ -62,7 +62,7 @@ export default function GraphCard({ title, xLabel, yLabel, data, xKey = "x", yKe
                                 angle={-90}
                                 offset={0}
                                 style={{ 
-                                    fill: '#0f5ff', 
+                                    fill: '#FDA5D5', 
                                     fontSize: '1rem',
                                     textAnchor: 'middle',
                                 }}

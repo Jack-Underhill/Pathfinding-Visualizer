@@ -11,6 +11,7 @@ export class GridRandom extends Alg {
     getName() { return GridRandom.id }
 
     step() {
+        this.stepCount++;
         const cell = this.getCurrCell();
         
         if(cell) {

@@ -6,7 +6,7 @@ function AlgPanelPF({ onRunAlgo, enableGrids }) {
     
     return (
         <CardWrapper className='w-full h-full flex flex-col justify-evenly items-center'>
-            <div className="text-2xl font-semibold">
+            <div className="text-2xl font-semibold text-[#FDA5D5]">
                 Pathfinders
             </div>
 
@@ -41,7 +41,7 @@ function AlgPanelPF({ onRunAlgo, enableGrids }) {
 
             <button
                 onClick={enableGrids}
-                className="py-0.5 px-3 w-[95%] rounded-sm bg-gray-900 hover:scale-110"
+                className="py-0.5 px-3 w-[95%] rounded-sm bg-gray-900 text-[#FDA5D5] hover:scale-110"
             >
                 Back
             </button>

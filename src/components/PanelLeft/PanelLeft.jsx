@@ -5,7 +5,7 @@ import AlgPanelGrid from './AlgPanelGrid';
 import AlgPanelPF from './AlgPanelPF';
 import RuntimeStats from './RuntimeStats';
 
-function PanelLeft({ onRunAlgo, onSpeedChange, onGridSizeChange, speed, gridSize, visitedCells, pathCells, runtime }) {    
+function PanelLeft({ onRunAlgo, onSpeedChange, onGridSizeChange, speed, gridSize, steppedCells, visitedCells, pathCells, runtime }) {    
     const [mode, setMode] = useState("grid");
 
     const enablePathfinders = () => setMode("pf");
@@ -35,6 +35,8 @@ function PanelLeft({ onRunAlgo, onSpeedChange, onGridSizeChange, speed, gridSize
                     />
                     
                     <RuntimeStats 
+                        gridSize={gridSize}
+                        steppedCells={steppedCells}
                         visitedCells={visitedCells}
                         pathCells={pathCells}
                         runtime={runtime}

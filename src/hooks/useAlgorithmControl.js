@@ -68,6 +68,8 @@ export function useAlgorithmControl({ gridRef, gridSize, currGridGenRef, currPFR
 
         gridRef.current = algo.grid;
         setRenderVersion(prevRender => prevRender + 1);
+
+        updatePFStats(false);
         setTimeout(() => runAlgo(algo), speedRef.current);
     }
     
@@ -83,13 +85,11 @@ export function useAlgorithmControl({ gridRef, gridSize, currGridGenRef, currPFR
         }, 0);
         
         gridRef.current.resetForPF();
+        currPFRef.current = new currPFClassRef.current(gridRef.current);
 
-        const pfInstance = new currPFClassRef.current(gridRef.current);
+        currPFRef.current.runInstant();
 
-        currPFRef.current = pfInstance;
-        pfInstance.runInstant();
-
-        gridRef.current = pfInstance.grid;
+        gridRef.current = currPFRef.current.grid;
         setRenderVersion(prevRender => prevRender + 1);
 
         updatePFStats(false);

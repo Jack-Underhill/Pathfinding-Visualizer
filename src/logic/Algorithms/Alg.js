@@ -16,6 +16,7 @@ export class Alg
     initStats() {
         this.visitedCount = 0;
         this.pathCount = 0;
+        this.stepCount = 0;
         this.runTime = 0;
         this.startTime = performance.now();
     }
@@ -136,8 +137,10 @@ export class Alg
     }
 
     setVisited(cell) {
-        cell.visited = true;
-        this.visitedCount++;
+        if(!cell.visited) {
+            cell.visited = true;
+            this.visitedCount++;
+        }
 
         if(cell.type === CellType.GENERATION) { 
             cell.type = CellType.VISITED; 

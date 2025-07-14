@@ -18,6 +18,7 @@ function App() {
         speed, setSpeed, speedRef,
         startAlgo, runInstantPF,
         
+        stepStat, setStepStat, stepStatRef,
         visitedStat, setVisitedStat, visitedStatRef,
         pathStat, setPathStat, pathStatRef,
         runtimeStat, setRuntimeStat, runtimeStatRef,
@@ -30,7 +31,7 @@ function App() {
 
   return (
     <div 
-      className='p-10 h-screen flex flex-col gap-10 bg-cover bg-center'
+      className='px-10 pt-10 pb-30 h-screen flex flex-col gap-10 bg-cover bg-center'
       style={{ backgroundImage: "url('/bg_starry-grid.png')" }}
     >
       <NavBar />
@@ -43,16 +44,17 @@ function App() {
               onGridSizeChange={setGridSize}
               speed={speed}
               gridSize={gridSize}
+              steppedCells={stepStat}
               visitedCells={visitedStat}
               pathCells={pathStat}
               runtime={runtimeStat}
             />
         </div>
         <div className={`h-full rounded-2xl flex-1/2 flex flex-col justify-between gap-6`}>
-          <div className="text-center p-0 flex justify-center text-5xl font-bold text-sky-400">
+          <div className="pb-2.5 text-center flex justify-center text-6xl font-bold text-gradient-bluepink">
             Pathfinding Visualizer
           </div>
-          <div className='flex h-[75vh] items-center justify-center'>
+          <div className='flex h-[70vh] items-center justify-center'>
             <CanvasGrid
               gridRef={gridRef}
               mouseInput={mouseInputRef.current}

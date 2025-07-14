@@ -11,7 +11,6 @@ Welcome to the **Pathfinding Visualizer** — a sleek, futuristic web app that b
 | Category | Tools & Services |
 |----------|------------------|
 | **Core** | Vite · React · TailwindCSS |
-| **UI / Motion** | AOS (Animate On Scroll) |
 | **Charts** | Recharts |
 | **Backend / Data** | Supabase (PostgreSQL + Auth) · Upstash Redis (unique-view counter) |
 | **Hosting / CI** | Netlify |
@@ -20,7 +19,7 @@ Welcome to the **Pathfinding Visualizer** — a sleek, futuristic web app that b
 
 ## 🚀 Live Demo
 
-👉 [Launch Visualizer](https://your-netlify-url.netlify.app)
+👉 [Launch Visualizer](https://pathfind-visual.netlify.app/)
 
 ---
 

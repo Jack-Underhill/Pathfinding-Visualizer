@@ -5,7 +5,7 @@ function Speed({ onSpeedChange, speed }) {
     
     return (
         <CardWrapper className='w-full h-full flex flex-col justify-evenly items-center'>
-            <div className="text-2xl font-semibold">
+            <div className="text-2xl font-semibold text-[#FDA5D5]">
                 Animation Speed
             </div>
 

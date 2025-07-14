@@ -79,31 +79,40 @@ function CanvasGrid({ gridRef, mouseInput, renderVersion, setRenderVersion, onCe
         return () => observer.disconnect();
     }, [renderVersion]);
 
+    const getCSSVar = (varName) => {
+        return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    }
+
+    const getHSLHeatColor = () => {
+        const hue = 0 + (240 * (index / total));
+        return `hsl(${heu}, 100%, 60%)`;
+    }
+
     const drawCell = (ctx, cell) => {
         const x = cell.col * getCellSize();
         const y = cell.row * getCellSize();
 
         switch(cell.type) {
             case CellType.EMPTY:
-                ctx.fillStyle = '#161C24';
+                ctx.fillStyle = getCSSVar('--color-grid-empty');
                 break;
             case CellType.GENERATION:
-                ctx.fillStyle = '#B8E6FE';
+                ctx.fillStyle = getCSSVar('--color-grid-generation');
                 break;
             case CellType.START:
-                ctx.fillStyle = '#0CBA0C';
+                ctx.fillStyle = getCSSVar('--color-grid-start');
                 break;
             case CellType.END:
-                ctx.fillStyle = '#9E0A0C';
+                ctx.fillStyle = getCSSVar('--color-grid-end');
                 break;
             case CellType.CHECKPOINT:
                 ctx.fillStyle = '#FFE608';
                 break;
             case CellType.VISITED:
-                ctx.fillStyle = '#00598A';
+                ctx.fillStyle = getCSSVar('--color-grid-visited');
                 break;
             case CellType.PATH:
-                ctx.fillStyle = '#00BCFF';
+                ctx.fillStyle = getCSSVar('--color-grid-path');
                 break;
             case CellType.NEXT:
                 ctx.fillStyle = '#BEDFF7';
@@ -117,7 +126,7 @@ function CanvasGrid({ gridRef, mouseInput, renderVersion, setRenderVersion, onCe
 
         ctx.fillRect(x, y, getCellSize(), getCellSize());
 
-        ctx.strokeStyle = '#161C24';
+        ctx.strokeStyle = getCSSVar('--color-grid-cellBorder');
         ctx.beginPath();
 
         if(gridRef.current.isOpen || !cell.links.includes(0))

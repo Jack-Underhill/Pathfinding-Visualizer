@@ -11,6 +11,7 @@ export class GridOpen extends Alg {
     getName() { return GridOpen.id }
 
     step() {
+        this.stepCount++;
         const cell = this.getCurrCell();
         
         if(cell) {
