@@ -54,7 +54,7 @@ export class Grid
         return newGrid;
     }
 
-    print() { console.log(this.grid); }
+    print() { console.log(this); }
 
     getCell(row, col)
     {

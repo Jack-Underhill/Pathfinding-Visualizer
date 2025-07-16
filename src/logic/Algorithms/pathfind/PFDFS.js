@@ -3,9 +3,7 @@ import Pathfind from './Pathfind';
 export class PFDFS extends Pathfind {
     constructor(grid) {
         super(grid);
-    }
 
-    initPF() {
         this.row = this.grid.start.row;
         this.col = this.grid.start.col;
     }
@@ -14,36 +12,32 @@ export class PFDFS extends Pathfind {
     getName() { return PFDFS.id }
 
     step() {
-        this.stepCount++;
         let cell = this.getCurrCell();
-        this.setVisited(cell);
+        super.step(cell);
+
+        if(this.isEnd(cell)) this.finalize();
         
         if(this.isWalkable(0)) {
             this.row--;
-        }
-        else if(this.isWalkable(1)) {
+            this.updateNextCell(this.getCurrCell(), cell);
+        } else if(this.isWalkable(1)) {
             this.col--;
-        }
-        else if(this.isWalkable(2)) {
+            this.updateNextCell(this.getCurrCell(), cell);
+        } else if(this.isWalkable(2)) {
             this.row++;
-        }
-        else if(this.isWalkable(3)) {
+            this.updateNextCell(this.getCurrCell(), cell);
+        } else if(this.isWalkable(3)) {
             this.col++;
-        }
-        else if(cell.parent) {
+            this.updateNextCell(this.getCurrCell(), cell);
+        } else if(cell.parent) { 
+            // Backtrack
             this.row = cell.parent.row;
             this.col = cell.parent.col;
             this.step();
             return;
-        }
-        else {
+        } else {
             this.done = true;
             return;
         }
-
-        const newCell = this.getCurrCell();
-        newCell.parent = cell;
-
-        if(isEnd(newCell)) this.finalize();
     }
 }

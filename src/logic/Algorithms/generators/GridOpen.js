@@ -12,7 +12,8 @@ export class GridOpen extends Generator {
     getName() { return GridOpen.id }
 
     step() {
-        this.stepCount++;
+        super.step();
+        
         const cell = this.getCurrCell();
         
         if(cell) {

@@ -7,10 +7,27 @@ export class Alg
         this.done = false;
         this.row = 0;
         this.col = 0;
+
+        // isSearchable: Pathfinder has been initialized
         this.isSearchable = isSearchable;
+
+        // isEditable: Grid has been generated
         this.grid.isEditable = false;
 
         this.initStats();
+    }
+
+    print() { console.log(this); }
+
+    step() {
+        this.stepCount++;
+    }
+
+    runInstant()
+    {
+        while(!this.isDone()) {
+            this.step();
+        }
     }
 
     initStats() {
@@ -23,6 +40,7 @@ export class Alg
 
     isDone() { return this.done; }
     isVisited(cell) { return cell.visited; }
+    isNext(cell) { return cell.isNext; }
 
     isBounded(r, c) {
         return (r >= 0 && r < this.grid.rows &&
@@ -35,6 +53,7 @@ export class Alg
 
         return (currCell &&
                 prevCell.links.includes(direction) && 
+                !this.isNext(currCell) && 
                 !this.isVisited(currCell) && 
                 currCell.type !== CellType.START);
     }
@@ -78,72 +97,6 @@ export class Alg
             return this.grid.getCell(r, c);
         } else {
             return null;
-        }
-    }
-
-    getRandCell() {
-        const randRow = Math.floor(Math.random() * this.grid.rows);
-        const randCol = Math.floor(Math.random() * this.grid.cols);
-
-        return this.grid.getCell(randRow, randCol);
-    }
-
-    runInstant()
-    {
-        this.initStats();
-        this.done = false;
-
-        this.initPF();
-
-        while(!this.isDone()) {
-            this.step();
-        }
-    }
-
-    setTypeToRandomCell(type)
-    {
-        let cell = this.getRandCell();
-        
-        // Finds cell that is not already start or end
-        while(cell.type === CellType.START || cell.type === CellType.END) {
-            cell = this.getRandCell();
-        }
-
-        cell.type = type;
-
-        if(type === CellType.START)
-        {
-            this.grid.start = cell;
-            this.row = cell.row;
-            this.col = cell.col;
-        }
-        else if(type === CellType.END)
-            this.grid.end = cell;
-    }
-
-    setPath() {
-        let cell = this.grid.end;
-        while(cell.parent)
-        {
-            this.pathCount++;
-
-            if(cell.type != CellType.START && cell.type != CellType.END)
-            {
-                cell.type = CellType.PATH;
-            }
-
-            cell = cell.parent;
-        }
-    }
-
-    setVisited(cell) {
-        if(!cell.visited) {
-            cell.visited = true;
-            this.visitedCount++;
-        }
-
-        if(cell.type === CellType.GENERATION) { 
-            cell.type = CellType.VISITED; 
         }
     }
 

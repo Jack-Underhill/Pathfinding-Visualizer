@@ -3,47 +3,36 @@ import Pathfind from './Pathfind';
 export class PFBFS extends Pathfind {
     constructor(grid) {
         super(grid);
-    }
 
-    initPF() {
         this.q = [];
         this.q.push(this.grid.start);
-        this.setVisited(this.grid.start);
-        this.visitedCount--;
     }
 
     static id = "Breadth First Search";
     getName() { return PFBFS.id }
 
     step() {
-        this.stepCount++;
         let cell = this.q.shift();
-        this.row = cell.row;
-        this.col = cell.col;
+        super.step(cell);
+        
+        if(this.isEnd(cell)) this.finalize();
 
-        if(this.qPush(0)) return;
-        if(this.qPush(1)) return;
-        if(this.qPush(2)) return;
-        if(this.qPush(3)) return;
+        this.qPush(0);
+        this.qPush(1);
+        this.qPush(2);
+        this.qPush(3);
 
+        // Fail Case: Expanded as far as it could but did not find the end.
         if(this.q.length <= 0) {
             this.done = true;
         }
     }
 
-    // Pushes cell if walkable. 
-    // Returns true if the push was the end.
     qPush(direction) {
         if(this.isWalkable(direction)) {
             let newCell = this.getNeighborCell(direction);
+            this.updateNextCell(newCell, this.getCurrCell());
             this.q.push(newCell);
-            this.setVisited(newCell);
-    
-            newCell.parent = this.getCurrCell();
-            
-            if(isEnd(newCell)) this.finalize();
         }
-        
-        return this.done;
     }
 }

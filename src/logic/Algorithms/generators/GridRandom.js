@@ -12,7 +12,8 @@ export class GridRandom extends Generator {
     getName() { return GridRandom.id }
 
     step() {
-        this.stepCount++;
+        super.step();
+        
         const cell = this.getCurrCell();
         
         if(cell) {
