@@ -151,20 +151,6 @@ export class Alg
         this.done = true;
         this.grid.isEditable = true;
     }
-
-    finalizeGrid() {
-        this.finalizeAlg();
-        if(!this.grid.start) this.setTypeToRandomCell(CellType.START);
-        if(!this.grid.end) this.setTypeToRandomCell(CellType.END);
-    }
-
-    finalizePFStep(newCell) {
-        if(newCell.type === CellType.END) {
-            this.setPath();
-            this.finalizeAlg();
-            this.runTime += performance.now() - this.startTime;
-        }
-    }
 }
 
 export default Alg;

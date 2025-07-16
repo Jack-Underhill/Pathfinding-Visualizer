@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { GridOpen } from "../logic/Algorithms/maze/GridOpen";
-import { GridRandom } from "../logic/Algorithms/maze/GridRandom";
+import { GridOpen } from "../logic/Algorithms/generators/GridOpen";
+import { GridRandom } from "../logic/Algorithms/generators/GridRandom";
 import { PFDFS } from '../logic/Algorithms/pathfind/PFDFS';
 import { PFBFS } from '../logic/Algorithms/pathfind/PFBFS';
 

@@ -1,9 +1,10 @@
 import { CellType } from "../../grid/CellTypes";
-import Alg from "../Alg"
 
-export class GridRandom extends Alg {
+import Generator from './Generator';
+
+export class GridRandom extends Generator {
     constructor(grid) {
-        super(grid, false);
+        super(grid);
         this.setTypeToRandomCell(CellType.START);
     }
 
@@ -38,7 +39,7 @@ export class GridRandom extends Alg {
                 this.row = newCell.row;
                 this.col = newCell.col;
             } else if(cell.type === CellType.START) {
-                this.finalizeGrid();
+                this.finalize();
                 return;
             } else {
                 newCell = cell.parent;
@@ -48,7 +49,7 @@ export class GridRandom extends Alg {
             }
         }
         else {
-            this.finalizeGrid();
+            this.finalize();
         }
     }
 

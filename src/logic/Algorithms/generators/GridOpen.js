@@ -1,9 +1,10 @@
 import { CellType } from "../../grid/CellTypes";
-import Alg from "../Alg"
 
-export class GridOpen extends Alg {
+import Generator from './Generator';
+
+export class GridOpen extends Generator {
     constructor(grid) {
-        super(grid, false);
+        super(grid);
         grid.isOpen = true;
     }
     
@@ -27,11 +28,11 @@ export class GridOpen extends Alg {
                 this.col++;
             }
             else {
-                this.finalizeGrid();
+                this.finalize();
             }
         }
         else {
-            this.finalizeGrid();
+            this.finalize();
         }
     }
 

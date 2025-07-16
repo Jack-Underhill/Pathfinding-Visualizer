@@ -1,9 +1,8 @@
-import Alg from "../Alg"
+import Pathfind from './Pathfind';
 
-export class PFBFS extends Alg {
+export class PFBFS extends Pathfind {
     constructor(grid) {
-        super(grid, true);
-        this.initPF();
+        super(grid);
     }
 
     initPF() {
@@ -42,7 +41,7 @@ export class PFBFS extends Alg {
     
             newCell.parent = this.getCurrCell();
             
-            this.finalizePFStep(newCell);
+            if(isEnd(newCell)) this.finalize();
         }
         
         return this.done;
