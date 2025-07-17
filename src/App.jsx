@@ -22,10 +22,11 @@ function App() {
         visitedStat, setVisitedStat, visitedStatRef,
         pathStat, setPathStat, pathStatRef,
         runtimeStat, setRuntimeStat, runtimeStatRef,
-        updatePFStats,
+        updatePFStats, updateRuntimeStats,
         
         recentRuns, setRecentRuns,
-        postRun, fetchRuns,
+        shouldUpdateCharts, setShouldUpdateCharts,
+        postRun, fetchRuns, refreshCharts,
   } = useVisualizerLogic();
 
 
@@ -71,6 +72,7 @@ function App() {
               currGrid={currGridGenRef.current}
               currPF={currPFRef.current}
               recentRuns={recentRuns}
+              shouldUpdateCharts={shouldUpdateCharts}
             />
         </div>
       </div>

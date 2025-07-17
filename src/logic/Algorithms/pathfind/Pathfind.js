@@ -54,7 +54,6 @@ export class Pathfind extends Alg {
         this.setVisited(this.getCurrCell());
         this.setPath();
         this.finalizeAlg();
-        this.runTime += performance.now() - this.startTime;
     }
 }
 

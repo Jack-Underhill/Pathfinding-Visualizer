@@ -18,7 +18,8 @@ export function useVisualizerLogic() {
 
     const {
         recentRuns, setRecentRuns,
-        postRun, fetchRuns,
+        shouldUpdateCharts, setShouldUpdateCharts,
+        postRun, fetchRuns, refreshCharts,
     } = useDatabase({ currGridGenRef, currPFRef });
 
     const {
@@ -26,14 +27,14 @@ export function useVisualizerLogic() {
         visitedStat, setVisitedStat, visitedStatRef,
         pathStat, setPathStat, pathStatRef,
         runtimeStat, setRuntimeStat, runtimeStatRef,
-        updatePFStats,
+        updatePFStats, updateRuntimeStats,
     } = useStats({ gridRef, gridSizeRef, currGridGenRef, currPFRef, postRun });
 
     const {
         running, setRunning,
         speed, setSpeed, speedRef,
         startAlgo, runInstantPF,
-    } = useAlgorithmControl({ gridRef, gridSize, currGridGenRef, currPFRef, mouseInputRef, setRenderVersion, updatePFStats });
+    } = useAlgorithmControl({ gridRef, gridSize, currGridGenRef, currPFRef, setRenderVersion, updatePFStats, updateRuntimeStats, refreshCharts });
 
 
     return {
@@ -52,9 +53,10 @@ export function useVisualizerLogic() {
         visitedStat, setVisitedStat, visitedStatRef,
         pathStat, setPathStat, pathStatRef,
         runtimeStat, setRuntimeStat, runtimeStatRef,
-        updatePFStats,
+        updatePFStats, updateRuntimeStats,
         
         recentRuns, setRecentRuns,
-        postRun, fetchRuns,
+        shouldUpdateCharts, setShouldUpdateCharts,
+        postRun, fetchRuns, refreshCharts,
     };
 }

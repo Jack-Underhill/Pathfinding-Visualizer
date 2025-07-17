@@ -34,7 +34,7 @@ export class Alg
         this.visitedCount = 0;
         this.pathCount = 0;
         this.stepCount = 0;
-        this.runTime = 0;
+        this.runtime = 0;
         this.startTime = performance.now();
     }
 
@@ -103,6 +103,7 @@ export class Alg
     finalizeAlg() {
         this.done = true;
         this.grid.isEditable = true;
+        this.runtime += performance.now() - this.startTime;
     }
 }
 

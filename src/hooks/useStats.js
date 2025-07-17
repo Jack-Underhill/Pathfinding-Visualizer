@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { getHeadlessRuntime } from '../utils/getHeadlessRuntime';
-
-export function useStats({ gridRef, gridSizeRef, currGridGenRef, currPFRef, postRun }) {
+export function useStats({ gridSizeRef, currGridGenRef, currPFRef, postRun }) {
     const [stepStat, setStepStat] = useState(0);
     const [visitedStat, setVisitedStat] = useState(0);
     const [pathStat, setPathStat] = useState(0);
@@ -18,39 +16,44 @@ export function useStats({ gridRef, gridSizeRef, currGridGenRef, currPFRef, post
     useEffect(() => { pathStatRef.current = pathStat; }, [pathStat]);
     useEffect(() => { runtimeStatRef.current = runtimeStat; }, [runtimeStat]);
 
-
-    const updatePFStats = async (shouldPost = true) => {
+    // Statistics of finished runs
+    const updatePFStats = async () => {
         const pf = currPFRef.current;
         const gr = currGridGenRef.current;
         if(!pf || !gr) return;
 
-        const steps = pf.stepCount;
-        const visited = pf.visitedCount;
-        const path = pf.pathCount;
-        const runtime = shouldPost ? await getHeadlessRuntime(pf, gridRef) : pf.runTime;
+        await updateRuntimeStats(pf);
+        await updatePostRun(pf, gr);
+    }
 
-        if(pf.isSearchable && shouldPost) {
-            postRun({
-                grid: gr.getName(),
-                algorithm: pf.getName(),
-                visited_steps: visited,
-                path_steps: path,
-                runtime_ms: runtime,
-                grid_size: gridSizeRef.current * gridSizeRef.current,
-            });
-        }
+    // Runtime Statistics
+    const updateRuntimeStats = async (pf) => {
+        if(!pf) return;
 
-        setStepStat(steps);
-        setVisitedStat(visited);
-        setPathStat(path);
-        setRuntimeStat(runtime);
-    };
+        setStepStat(pf.stepCount);
+        setVisitedStat(pf.visitedCount);
+        setPathStat(pf.pathCount);
+        setRuntimeStat(pf.runtime);
+    }
+
+    const updatePostRun = async (pf, gr) => {
+        if(pf.runtime === 0) return;
+
+        await postRun({
+            grid: gr.getName(),
+            algorithm: pf.getName(),
+            visited_steps: pf.visitedCount,
+            path_steps: pf.pathCount,
+            runtime_ms: pf.runtime,
+            grid_size: gridSizeRef.current * gridSizeRef.current,
+        });
+    }
 
     return {
         stepStat, setStepStat, stepStatRef,
         visitedStat, setVisitedStat, visitedStatRef,
         pathStat, setPathStat, pathStatRef,
         runtimeStat, setRuntimeStat, runtimeStatRef,
-        updatePFStats,
+        updatePFStats, updateRuntimeStats,
     };
 }

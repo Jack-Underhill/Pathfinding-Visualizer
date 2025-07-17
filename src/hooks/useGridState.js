@@ -23,6 +23,6 @@ export function useGridState(initialSize = 25) {
         grid, setGrid, gridRef,
         gridSize, setGridSize, gridSizeRef,
         mouseInputRef,
-        renderVersion, setRenderVersion
+        renderVersion, setRenderVersion,
     };
 }

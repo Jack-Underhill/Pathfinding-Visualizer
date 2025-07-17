@@ -1,37 +1,21 @@
-import { useMemo } from "react";
+import { useRef, useEffect, useMemo, useState } from "react";
 import React from "react";
 
 import State from "./State";
 import GraphCard from "./GraphCard";
 
-function useStableChartData(data, xKey, yKey) {
-    return useMemo(() => {
-        if (!Array.isArray(data)) return [];
+import getChartData from '../../utils/getChartData';
 
-        const grouped = new Map();
+const PanelRight = React.memo(function PanelRight({ isRunning, currGrid, currPF, recentRuns, shouldUpdateCharts }) {
+    const [timeEffData, setTimeEffData] = useState([]);
+    const [exploreEffData, setExploreEffData] = useState([]);
 
-        for (const row of data) {
-            const xVal = row[xKey];
-            const yVal = row[yKey];
+    useEffect(() => { 
+        setTimeEffData(getChartData(recentRuns, 'path_steps', 'runtime_ms'));
+        setExploreEffData(getChartData(recentRuns, 'grid_size', 'visited_steps'));
+     }, [shouldUpdateCharts]);
 
-            if (!grouped.has(xVal)) grouped.set(xVal, []);
 
-            grouped.get(xVal).push(yVal);
-        }
-
-        const averaged = Array.from(grouped.entries()).map(([x, yList]) => ({
-            x,
-            y: yList.reduce((sum, y) => sum + y, 0) / yList.length,
-        }));
-
-        return averaged.sort((a, b) => a.x - b.x);
-    }, [JSON.stringify(data), xKey, yKey]);
-}
-
-const PanelRight = React.memo(function PanelRight({ isRunning, currGrid, currPF, recentRuns }) {
-    const timeEfficiencyData = useStableChartData(recentRuns, 'path_steps', 'runtime_ms', 'path_steps');
-    const exploreEfficiencyData = useStableChartData(recentRuns, 'grid_size', 'visited_steps', 'grid_size');
-    
     return (
         <>
             <div className={`flex-1/6`}>
@@ -44,7 +28,7 @@ const PanelRight = React.memo(function PanelRight({ isRunning, currGrid, currPF,
             <div className={`flex-5/12`}>
                 <GraphCard 
                     title="Time Efficiency"
-                    data={timeEfficiencyData}
+                    data={timeEffData}
                     xLabel="Path Steps"
                     yLabel="Runtime (ms)"
                 />
@@ -52,7 +36,7 @@ const PanelRight = React.memo(function PanelRight({ isRunning, currGrid, currPF,
             <div className={`flex-5/12`}>
                 <GraphCard 
                     title="Explore Efficiency"
-                    data={exploreEfficiencyData}
+                    data={exploreEffData}
                     xLabel="Grid Size"
                     yLabel="Visited Cells"
                 />
@@ -61,5 +45,4 @@ const PanelRight = React.memo(function PanelRight({ isRunning, currGrid, currPF,
     );
 });
 
-PanelRight.displayName = "PanelRight";
 export default PanelRight;

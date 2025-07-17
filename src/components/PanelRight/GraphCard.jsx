@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
     LineChart,
     Line,
@@ -11,8 +13,7 @@ import {
 
 import CardWrapper from '../CardWrapper';
 
-export default function GraphCard({ title, xLabel, yLabel, data, xKey = "x", yKey = "y", gradientColor = '#00f5ff' }) {
-    
+const GraphCard = React.memo(function GraphCard({ title, xLabel, yLabel, data, xKey = "x", yKey = "y", gradientColor = '#00f5ff' }) {
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             return (
@@ -90,4 +91,6 @@ export default function GraphCard({ title, xLabel, yLabel, data, xKey = "x", yKe
             </div>
         </CardWrapper>
     );
-}
+});
+
+export default GraphCard;

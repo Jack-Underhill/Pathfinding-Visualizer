@@ -5,7 +5,9 @@ import { GridRandom } from "../logic/Algorithms/generators/GridRandom";
 import { PFDFS } from '../logic/Algorithms/pathfind/PFDFS';
 import { PFBFS } from '../logic/Algorithms/pathfind/PFBFS';
 
-export function useAlgorithmControl({ gridRef, gridSize, currGridGenRef, currPFRef, mouseInputRef, setRenderVersion, updatePFStats }) {
+import { getHeadlessRuntime } from '../utils/getHeadlessRuntime';
+
+export function useAlgorithmControl({ gridRef, gridSize, currGridGenRef, currPFRef, setRenderVersion, updatePFStats, updateRuntimeStats, refreshCharts }) {
     const [running, setRunning] = useState(false);
     const [speed, setSpeed] = useState(100);
     
@@ -53,13 +55,19 @@ export function useAlgorithmControl({ gridRef, gridSize, currGridGenRef, currPFR
             }
             
             setRunning(true);
+            refreshCharts();
             runAlgo(algo);
         }
     }
 
-    const runAlgo = (algo) => {
+    const runAlgo = async (algo) => {
         if(!algo || algo.isDone()) {
-            updatePFStats();
+            if(currPFRef.current) {
+                currPFRef.current.runtime = await getHeadlessRuntime(currPFRef.current, gridRef);
+                await updatePFStats();
+                refreshCharts();
+            }
+
             setRunning(false);
             return;
         }
@@ -69,7 +77,7 @@ export function useAlgorithmControl({ gridRef, gridSize, currGridGenRef, currPFR
         gridRef.current = algo.grid;
         setRenderVersion(prevRender => prevRender + 1);
 
-        updatePFStats(false);
+        updateRuntimeStats(currPFRef.current);
         setTimeout(() => runAlgo(algo), speedRef.current);
     }
     
@@ -92,7 +100,7 @@ export function useAlgorithmControl({ gridRef, gridSize, currGridGenRef, currPFR
         gridRef.current = currPFRef.current.grid;
         setRenderVersion(prevRender => prevRender + 1);
 
-        updatePFStats(false);
+        updateRuntimeStats(currPFRef.current);
     }, []);
 
     const initGridGen = (genClass) => {
