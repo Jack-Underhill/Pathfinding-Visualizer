@@ -32,7 +32,7 @@ function App() {
 
   return (
     <div 
-      className='px-10 pt-10 pb-30 h-screen flex flex-col gap-10 bg-cover bg-center'
+      className='h-screen px-10 pt-10 pb-30 flex flex-col gap-10 bg-cover bg-center'
       style={{ backgroundImage: "url('/bg_starry-grid.png')" }}
     >
       <NavBar />

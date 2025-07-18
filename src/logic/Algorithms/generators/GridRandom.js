@@ -15,10 +15,8 @@ export class GridRandom extends Generator {
         super.step();
         
         const cell = this.getCurrCell();
-        
         if(cell) {
             cell.visited = true;
-            this.visitedCount++;
 
             if(cell.type === CellType.EMPTY) {
                 cell.type = CellType.GENERATION; 

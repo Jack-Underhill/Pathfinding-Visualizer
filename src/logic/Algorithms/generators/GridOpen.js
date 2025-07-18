@@ -15,7 +15,6 @@ export class GridOpen extends Generator {
         super.step();
         
         const cell = this.getCurrCell();
-        
         if(cell) {
             cell.type = CellType.GENERATION;
             this.setLinks(cell);

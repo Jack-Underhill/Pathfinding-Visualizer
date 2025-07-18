@@ -23,6 +23,12 @@ function AlgPanelGrid({ onRunAlgo, enablePathfinders, onGridSizeChange, gridSize
                     onRunAlgo={onRunAlgo}
                     enablePathfinders={enablePathfinders}
                 />
+                <AlgButton 
+                    name="Prim's"
+                    functionName="PrimsGrid" 
+                    onRunAlgo={onRunAlgo}
+                    enablePathfinders={enablePathfinders}
+                />         
                 {/* <button
                     onClick={() => onRunAlgo("PrimsGrid")}
                     className={algClass}

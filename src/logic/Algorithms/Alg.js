@@ -100,6 +100,11 @@ export class Alg
         }
     }
 
+    setCurrCell(cell) {
+        this.row = cell.row;
+        this.col = cell.col;
+    }
+
     finalizeAlg() {
         this.done = true;
         this.grid.isEditable = true;

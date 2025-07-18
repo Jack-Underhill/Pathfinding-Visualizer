@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { GridOpen } from "../logic/Algorithms/generators/GridOpen";
 import { GridRandom } from "../logic/Algorithms/generators/GridRandom";
+import { Prims } from '../logic/Algorithms/generators/Prims';
 import { PFDFS } from '../logic/Algorithms/pathfind/PFDFS';
 import { PFBFS } from '../logic/Algorithms/pathfind/PFBFS';
 
@@ -24,15 +25,18 @@ export function useAlgorithmControl({ gridRef, gridSize, currGridGenRef, currPFR
             let algo;
             
             switch(algoName) {
+                // Grid Generators
                 case "OpenGrid":
                     algo = initGridGen(GridOpen);
                     break;
                 case "RandomGrid":
                     algo = initGridGen(GridRandom);
                     break;
-                // case "PrimsGrid":
-                    //   setAlgorithm(new GridPrims(gridRef.current));
-                    //   break;
+                case "PrimsGrid":
+                    algo = initGridGen(Prims);
+                    break;
+                    
+                // Pathfinders
                 case "DFSPF":
                     algo = initPF(PFDFS);
                     break;

@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 @theme {
+  --color-background: #00142B;
+
   /* Cards */
   --color-card: #002B4B; 
   --color-card-border: rgba(255, 145, 205, 0.3);
@@ -63,4 +65,5 @@ html, body, #root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   margin: 0px;
   padding: 0px;
+  background-color: #00142B;
 }
