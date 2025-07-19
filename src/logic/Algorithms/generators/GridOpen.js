@@ -1,5 +1,3 @@
-import { CellType } from "../../grid/CellTypes";
-
 import Generator from './Generator';
 
 export class GridOpen extends Generator {
@@ -16,11 +14,10 @@ export class GridOpen extends Generator {
         
         const cell = this.getCurrCell();
         if(cell) {
-            cell.type = CellType.GENERATION;
+            this.setTypeGeneration(cell);
             this.setLinks(cell);
 
-            if(this.row < this.grid.rows - 1)
-            {
+            if(this.row < this.grid.rows - 1) {
                 this.row++;
             }
             else if(this.col < this.grid.cols - 1) {
@@ -37,12 +34,10 @@ export class GridOpen extends Generator {
     }
 
     setLinks(cell) {
-        let row = cell.row;
-        let col = cell.col;
+        for(let dir of this.getDirectionList()) {
+            const { r, c } = this.getNeighborPosition(cell, dir);
 
-        if(this.isBounded(row - 1, col)) { cell.links.push(0); }
-        if(this.isBounded(row, col - 1)) { cell.links.push(1); }
-        if(this.isBounded(row + 1, col)) { cell.links.push(2); }
-        if(this.isBounded(row, col + 1)) { cell.links.push(3); }
+            if(this.isBounded(r, c)) cell.links.push(dir);
+        }
     }
 }

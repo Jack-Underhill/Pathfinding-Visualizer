@@ -1,12 +1,12 @@
 import { CellType } from "../grid/CellTypes";
+import { Direction } from '../grid/Direction'
 
 export class Alg
 {
     constructor(grid, isSearchable) {
         this.grid = grid;
         this.done = false;
-        this.row = 0;
-        this.col = 0;
+        this.setCurrCellPosition(0, 0);
 
         // isSearchable: Pathfinder has been initialized
         this.isSearchable = isSearchable;
@@ -47,62 +47,82 @@ export class Alg
                 c >= 0 && c < this.grid.cols)
     }
 
-    isWalkable(direction) {
-        const prevCell = this.getCurrCell();
-        const currCell = this.getNeighborCell(direction);
-
-        return (currCell &&
-                prevCell.links.includes(direction) && 
-                !this.isNext(currCell) && 
-                !this.isVisited(currCell) && 
-                currCell.type !== CellType.START);
-    }
-
     getCurrCell() {
         return this.grid.getCell(this.row, this.col);
     }
 
-    getDirection(child, parent) {
-        if(child.row < parent.row) {
-            return 0;
-        } else if(child.col < parent.col) {
-            return 1;
-        } else if(child.row > parent.row) {
-            return 2;
-        } else if(child.col > parent.col) {
-            return 3;
+    getDirectionLink(fromCell, toCell) {
+        if(fromCell.row > toCell.row) return Direction.UP;
+        if(fromCell.row < toCell.row) return Direction.DOWN;
+        if(fromCell.col > toCell.col) return Direction.LEFT;
+        if(fromCell.col < toCell.col) return Direction.RIGHT;
+
+        throw new Error("Cells are not neighbors");
+    }
+
+    getNeighborPosition(cell, direction) {
+        let r, c;
+
+        switch (direction) {
+            case Direction.UP:
+                r = cell.row - 1;
+                c = cell.col;
+                break;
+            case Direction.LEFT:
+                r = cell.row;
+                c = cell.col - 1;
+                break;
+            case Direction.DOWN:
+                r = cell.row + 1;
+                c = cell.col;
+                break;
+            case Direction.RIGHT:
+                r = cell.row;
+                c = cell.col + 1;
+                break;
+        
+            default:
+                r = null;
+                c = null;
+                break;
         }
+
+        return { r, c };
     }
 
     getNeighborCell(direction) {
-        let r, c;
+        const { r, c } = this.getNeighborPosition(this.getCurrCell(), direction);
 
-        if(direction === 0) {
-            r = this.row - 1;
-            c = this.col;
-        } else if(direction === 1) {
-            r = this.row;
-            c = this.col - 1;
-        } else if(direction === 2) {
-            r = this.row + 1;
-            c = this.col;
-        } else if(direction === 3) {
-            r = this.row;
-            c = this.col + 1;
-        } else {
-            return null;
-        }
-
-        if(this.isBounded(r, c)) {
+        if(r !== null && c !== null && this.isBounded(r, c)) {
             return this.grid.getCell(r, c);
         } else {
             return null;
         }
     }
 
+    getDirectionList() {
+        return [Direction.UP, Direction.LEFT, Direction.DOWN, Direction.RIGHT];
+    }
+
     setCurrCell(cell) {
         this.row = cell.row;
         this.col = cell.col;
+    }
+
+    setCurrCellPosition(r, c) {
+        this.row = r;
+        this.col = c;
+    }
+
+    setParent(child, parent) { child.parent = parent; }
+
+    shuffle(arr) {
+        for(let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+
+        return arr;
     }
 
     finalizeAlg() {

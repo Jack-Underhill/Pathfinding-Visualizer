@@ -13,37 +13,23 @@ export class GridRandom extends Generator {
 
     step() {
         super.step();
-        
+
         const cell = this.getCurrCell();
         if(cell) {
+            this.setTypeGeneration(cell);
             cell.visited = true;
 
-            if(cell.type === CellType.EMPTY) {
-                cell.type = CellType.GENERATION; 
-            }
-
-            const availableDirs = this.getWalkableDirections();
-
-            let newCell;
-            if(availableDirs.length > 0) {
-                newCell = this.getRandomWalk(availableDirs);
-
-                const newDir = this.getDirection(newCell, cell);
-                const oldDir = this.getDirection(cell, newCell);
-
-                newCell.links.push(oldDir);
-                cell.links.push(newDir);
-
-                newCell.parent = cell;
-                this.row = newCell.row;
-                this.col = newCell.col;
+            const newCell = this.getRandomWalk(cell);
+            if(newCell) {
+                this.linkCells(cell, newCell);
+                this.setParent(newCell, cell);
+                this.setCurrCell(newCell);
             } else if(cell.type === CellType.START) {
                 this.finalize();
                 return;
             } else {
-                newCell = cell.parent;
-                this.row = newCell.row;
-                this.col = newCell.col;
+                // Backtrack
+                this.setCurrCell(cell.parent);
                 this.step();
             }
         }
@@ -60,21 +46,23 @@ export class GridRandom extends Generator {
                !cell.visited);
     }
 
-    getWalkableDirections() {
-        const avail = [];
+    getWalkableDirections(cell) {
+        const availDirs = [];
 
-        if(this.isGeneratable(this.row - 1, this.col)) { avail.push(0); }
-        if(this.isGeneratable(this.row, this.col - 1)) { avail.push(1); }
-        if(this.isGeneratable(this.row + 1, this.col)) { avail.push(2); }
-        if(this.isGeneratable(this.row, this.col + 1)) { avail.push(3); }
+        for(let dir of this.getDirectionList()) {
+            const { r, c } = this.getNeighborPosition(cell, dir);
 
-        return avail;
+            if(this.isGeneratable(r, c)) availDirs.push(dir);
+        }
+
+        return availDirs;
     }
 
-    getRandomWalk(avail) {
-        const randDirIndex = Math.floor(Math.random() * avail.length);
-        let cell = this.getNeighborCell(avail[randDirIndex]);
+    getRandomWalk(cell) {
+        const availDirs = this.getWalkableDirections(cell);
+        if(availDirs.length <= 0) return null;
 
-        return cell;
+        const randDirIndex = Math.floor(Math.random() * availDirs.length);
+        return this.getNeighborCell(availDirs[randDirIndex]);
     }
 }

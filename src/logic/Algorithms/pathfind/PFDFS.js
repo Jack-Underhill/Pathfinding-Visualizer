@@ -4,40 +4,43 @@ export class PFDFS extends Pathfind {
     constructor(grid) {
         super(grid);
 
-        this.row = this.grid.start.row;
-        this.col = this.grid.start.col;
+        this.setCurrCell(this.grid.start);
     }
 
     static id = "Depth First Search";
     getName() { return PFDFS.id }
 
     step() {
-        let cell = this.getCurrCell();
-        super.step(cell);
+        let currCell = this.getCurrCell();
+        super.step(currCell);
 
-        if(this.isEnd(cell)) this.finalize();
-        
-        if(this.isWalkable(0)) {
-            this.row--;
-            this.updateNextCell(this.getCurrCell(), cell);
-        } else if(this.isWalkable(1)) {
-            this.col--;
-            this.updateNextCell(this.getCurrCell(), cell);
-        } else if(this.isWalkable(2)) {
-            this.row++;
-            this.updateNextCell(this.getCurrCell(), cell);
-        } else if(this.isWalkable(3)) {
-            this.col++;
-            this.updateNextCell(this.getCurrCell(), cell);
-        } else if(cell.parent) { 
+        if(this.isEnd(currCell)) this.finalize();
+
+        const nextCell = this.getWalkedCell(currCell);
+        if(nextCell !== null) {
+            this.setCurrCell(nextCell);
+            this.updateNextCell(nextCell, currCell);
+        } else if(currCell.parent) { 
             // Backtrack
-            this.row = cell.parent.row;
-            this.col = cell.parent.col;
+            this.setCurrCell(currCell.parent);
             this.step();
             return;
         } else {
+            // Fail Case: Expanded as far as it could and backtracked to start.
             this.done = true;
             return;
         }
+    }
+
+    getWalkedCell(currCell) {
+        for(let dir of this.getDirectionList()) {
+            const nextCell = this.getNeighborCell(dir);
+
+            if(this.isWalkableLink(currCell, nextCell, dir)) {
+                return nextCell;
+            }
+        }
+
+        return null;
     }
 }

@@ -5,12 +5,12 @@ export class Generator extends Alg {
     constructor(grid) {
         super(grid, false);
     }
-    
+
     step() {
         super.step();
     }
 
-    getRandCell() {
+    getRandGridCell() {
         const randRow = Math.floor(Math.random() * this.grid.rows);
         const randCol = Math.floor(Math.random() * this.grid.cols);
 
@@ -19,11 +19,11 @@ export class Generator extends Alg {
 
     setTypeToRandomCell(type)
     {
-        let cell = this.getRandCell();
+        let cell = this.getRandGridCell();
         
         // Finds cell that is not already start or end
         while(cell.type === CellType.START || cell.type === CellType.END) {
-            cell = this.getRandCell();
+            cell = this.getRandGridCell();
         }
 
         cell.type = type;
@@ -31,11 +31,24 @@ export class Generator extends Alg {
         if(type === CellType.START)
         {
             this.grid.start = cell;
-            this.row = cell.row;
-            this.col = cell.col;
+            this.setCurrCell(cell);
         }
         else if(type === CellType.END)
             this.grid.end = cell;
+    }
+
+    setTypeGeneration(cell) {
+        if(cell.type === CellType.EMPTY) {
+            cell.type = CellType.GENERATION; 
+        }
+    }
+
+    linkCells(cell1, cell2) {
+        const dir1to2 = this.getDirectionLink(cell1, cell2);
+        const dir2to1 = this.getDirectionLink(cell2, cell1);
+
+        if(!cell1.links.includes(dir1to2)) cell1.links.push(dir1to2);
+        if(!cell2.links.includes(dir2to1)) cell2.links.push(dir2to1);
     }
 
     finalize() {

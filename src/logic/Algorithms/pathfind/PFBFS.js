@@ -12,15 +12,12 @@ export class PFBFS extends Pathfind {
     getName() { return PFBFS.id }
 
     step() {
-        let cell = this.q.shift();
-        super.step(cell);
+        let currCell = this.q.shift();
+        super.step(currCell);
         
-        if(this.isEnd(cell)) this.finalize();
+        if(this.isEnd(currCell)) this.finalize();
 
-        this.qPush(0);
-        this.qPush(1);
-        this.qPush(2);
-        this.qPush(3);
+        this.addNextCells(currCell);
 
         // Fail Case: Expanded as far as it could but did not find the end.
         if(this.q.length <= 0) {
@@ -28,11 +25,14 @@ export class PFBFS extends Pathfind {
         }
     }
 
-    qPush(direction) {
-        if(this.isWalkable(direction)) {
-            let newCell = this.getNeighborCell(direction);
-            this.updateNextCell(newCell, this.getCurrCell());
-            this.q.push(newCell);
+    addNextCells(currCell) {
+        for(let dir of this.getDirectionList()) {
+            const nextCell = this.getNeighborCell(dir);
+
+            if(this.isWalkableLink(currCell, nextCell, dir)) {
+                this.updateNextCell(nextCell, currCell);
+                this.q.push(nextCell);
+            }
         }
     }
 }

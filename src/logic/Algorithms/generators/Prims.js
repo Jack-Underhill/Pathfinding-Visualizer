@@ -20,12 +20,9 @@ export class Prims extends Generator {
         
         const cell = this.getNextCell();
         if(cell) {
-            this.setCurrCell(cell);
+            this.setTypeGeneration(cell);
             cell.visited = true;
-
-            if(cell.type === CellType.EMPTY) {
-                cell.type = CellType.GENERATION; 
-            }
+            this.setCurrCell(cell);
             
             this.connectNextCell(cell);
             this.addNextCells();
@@ -48,25 +45,20 @@ export class Prims extends Generator {
     }
 
     connectNextCell(nextCell) {
-        const directions = this.shuffle([0, 1, 2, 3]);
+        const directions = this.shuffle(this.getDirectionList());
 
         for(let dir of directions) {
-            const neighbor = this.getNeighborCell(dir);
+            const visitedCell = this.getNeighborCell(dir);
 
-            if(neighbor?.visited) {
-                const fromNextToVisited = this.getDirection(nextCell, neighbor);
-                const fromVisitedToNext = this.getDirection(neighbor, nextCell);
-
-                nextCell.links.push(fromVisitedToNext);
-                neighbor.links.push(fromNextToVisited);
-
+            if(visitedCell?.visited) {
+                this.linkCells(nextCell, visitedCell);
                 break;
             }
         }
     }
 
     addNextCells() {
-        for(let dir = 0; dir < 4; dir++) {
+        for(let dir of this.getDirectionList()) {
             const nextCell = this.getNeighborCell(dir);
 
             if(this.isGeneratable(nextCell)) {
@@ -78,14 +70,5 @@ export class Prims extends Generator {
 
     isGeneratable(cell) {
         return(cell && !cell.visited && !cell.isNext);
-    }
-
-    shuffle(arr) {
-        for(let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-        
-        return arr;
     }
 }

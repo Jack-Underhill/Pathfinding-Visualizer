@@ -8,4 +8,4 @@ export const CellType = Object.freeze({
     PATH:        "path",
     NEXT:        "next",
     WALL:        "wall",
-})
+});

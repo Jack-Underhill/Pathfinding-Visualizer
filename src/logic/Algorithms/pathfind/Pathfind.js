@@ -10,9 +10,9 @@ export class Pathfind extends Alg {
 
     step(cell) {
         super.step();
+
+        this.setCurrCell(cell);
         this.setVisited(cell);
-        this.row = cell.row;
-        this.col = cell.col;
     }
 
     updateNextCell(child, parent) {
@@ -21,6 +21,14 @@ export class Pathfind extends Alg {
     }
 
     isEnd(cell) { return cell.type === CellType.END; } 
+
+    isWalkableLink(fromCell, toCell, dir) {
+        return (toCell &&
+                fromCell.links.includes(dir) && 
+                !this.isNext(toCell) && 
+                !this.isVisited(toCell) && 
+                toCell.type !== CellType.START);
+    }
 
     setVisited(cell) {
         if(this.isNext(cell) && !this.isVisited(cell)) {
@@ -32,8 +40,6 @@ export class Pathfind extends Alg {
             cell.type = CellType.VISITED; 
         }
     }
-
-    setParent(child, parent) { child.parent = parent; }
 
     setPath() {
         let cell = this.grid.end;
