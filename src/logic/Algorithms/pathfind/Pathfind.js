@@ -17,26 +17,35 @@ export class Pathfind extends Alg {
 
     updateNextCell(child, parent) {
         child.isNext = true;
+        if(child.type === CellType.GENERATION) { 
+            child.type = CellType.NEXT; 
+        }
+
         this.setParent(child, parent);
     }
 
     isEnd(cell) { return cell.type === CellType.END; } 
 
-    isWalkableLink(fromCell, toCell, dir) {
-        return (toCell &&
+    isLinked(fromCell, toCell, dir) { 
+        return (toCell && 
                 fromCell.links.includes(dir) && 
+                toCell.type !== CellType.START); 
+    }
+
+    isWalkableLink(fromCell, toCell, dir) {
+        return (this.isLinked(fromCell, toCell, dir) && 
                 !this.isNext(toCell) && 
-                !this.isVisited(toCell) && 
-                toCell.type !== CellType.START);
+                !this.isVisited(toCell));
     }
 
     setVisited(cell) {
         if(this.isNext(cell) && !this.isVisited(cell)) {
             cell.visited = true;
+            cell.isNext = false;
             this.visitedCount++;
         }
 
-        if(cell.type === CellType.GENERATION) { 
+        if(cell.type === CellType.GENERATION || cell.type === CellType.NEXT) { 
             cell.type = CellType.VISITED; 
         }
     }
@@ -54,6 +63,8 @@ export class Pathfind extends Alg {
 
             cell = cell.parent;
         }
+
+        this.pathCount++;
     }
 
     finalize() {

@@ -2,7 +2,7 @@ import { CellType } from "../../grid/CellTypes";
 
 import Generator from './Generator';
 
-export class Prims extends Generator {
+export class GridPrims extends Generator {
     constructor(grid) {
         super(grid);
         this.setTypeToRandomCell(CellType.START);
@@ -13,7 +13,7 @@ export class Prims extends Generator {
     }
 
     static id = "Prims Grid";
-    getName() { return Prims.id }
+    getName() { return GridPrims.id }
 
     step() {
         super.step();

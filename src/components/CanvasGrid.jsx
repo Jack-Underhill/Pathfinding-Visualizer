@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { CellType } from "../logic/grid/CellTypes";
+import { Direction } from "../logic/grid/Direction";
 
 function CanvasGrid({ gridRef, mouseInput, renderVersion, setRenderVersion, onCellMove }) {
     const canvasRef = useRef(null);
@@ -115,7 +116,7 @@ function CanvasGrid({ gridRef, mouseInput, renderVersion, setRenderVersion, onCe
                 ctx.fillStyle = getCSSVar('--color-grid-path');
                 break;
             case CellType.NEXT:
-                ctx.fillStyle = '#BEDFF7';
+                ctx.fillStyle = getCSSVar('--color-grid-next');;
                 break;
             case CellType.WALL:
                 ctx.fillStyle = '#3F4045';
@@ -129,13 +130,13 @@ function CanvasGrid({ gridRef, mouseInput, renderVersion, setRenderVersion, onCe
         ctx.strokeStyle = getCSSVar('--color-grid-cellBorder');
         ctx.beginPath();
 
-        if(gridRef.current.isOpen || !cell.links.includes(0))
+        if(gridRef.current.isOpen || !cell.links.includes(Direction.UP))
             ctx.moveTo(x, y), ctx.lineTo(x + getCellSize(), y)
-        if(gridRef.current.isOpen || !cell.links.includes(1))
+        if(gridRef.current.isOpen || !cell.links.includes(Direction.LEFT))
             ctx.moveTo(x, y), ctx.lineTo(x, y + getCellSize())
-        if(gridRef.current.isOpen || !cell.links.includes(2))
+        if(gridRef.current.isOpen || !cell.links.includes(Direction.DOWN))
             ctx.moveTo(x, y + getCellSize()), ctx.lineTo(x + getCellSize(), y + getCellSize())
-        if(gridRef.current.isOpen || !cell.links.includes(3))
+        if(gridRef.current.isOpen || !cell.links.includes(Direction.RIGHT))
             ctx.moveTo(x + getCellSize(), y), ctx.lineTo(x + getCellSize(), y + getCellSize())
 
         ctx.stroke();

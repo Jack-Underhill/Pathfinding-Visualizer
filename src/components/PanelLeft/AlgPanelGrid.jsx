@@ -28,13 +28,7 @@ function AlgPanelGrid({ onRunAlgo, enablePathfinders, onGridSizeChange, gridSize
                     functionName="PrimsGrid" 
                     onRunAlgo={onRunAlgo}
                     enablePathfinders={enablePathfinders}
-                />         
-                {/* <button
-                    onClick={() => onRunAlgo("PrimsGrid")}
-                    className={algClass}
-                >
-                    Prim's
-                </button> */}
+                />
             </div>
 
             {/* divider */}

@@ -26,7 +26,6 @@ export class GridRandom extends Generator {
                 this.setCurrCell(newCell);
             } else if(cell.type === CellType.START) {
                 this.finalize();
-                return;
             } else {
                 // Backtrack
                 this.setCurrCell(cell.parent);

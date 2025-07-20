@@ -16,6 +16,7 @@
   /* Grid Cells */
   --color-grid-empty: rgba(255, 255, 255, 0.03); /* very subtle empty space */
   --color-grid-generation: #112B33;
+  --color-grid-next: #247c99;
   --color-grid-visited: #4bbcd3;
   --color-grid-path: #a274c4;
   --color-grid-start: #49ff94;

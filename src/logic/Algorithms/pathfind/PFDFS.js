@@ -14,7 +14,10 @@ export class PFDFS extends Pathfind {
         let currCell = this.getCurrCell();
         super.step(currCell);
 
-        if(this.isEnd(currCell)) this.finalize();
+        if(this.isEnd(currCell)) {
+            this.finalize();
+            return;
+        }
 
         const nextCell = this.getWalkedCell(currCell);
         if(nextCell !== null) {

@@ -12,10 +12,13 @@ export class PFBFS extends Pathfind {
     getName() { return PFBFS.id }
 
     step() {
-        let currCell = this.q.shift();
+        const currCell = this.q.shift();
         super.step(currCell);
-        
-        if(this.isEnd(currCell)) this.finalize();
+
+        if(this.isEnd(currCell)) {
+            this.finalize();
+            return;
+        }
 
         this.addNextCells(currCell);
 

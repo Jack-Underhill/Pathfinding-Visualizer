@@ -20,13 +20,12 @@ function AlgPanelPF({ onRunAlgo, enableGrids }) {
                 functionName="BFSPF" 
                 onRunAlgo={onRunAlgo}
             />
+            <AlgButton 
+                name="A* Search"
+                functionName="AStarPF" 
+                onRunAlgo={onRunAlgo}
+            />
             {/* <button
-                onClick={() => onRunAlgo("AStarPF")}
-                className={algClass}
-            >
-                A*
-            </button>
-            <button
                 onClick={() => onRunAlgo("SHPBFSPF")}
                 className={algClass}
             >

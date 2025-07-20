@@ -2,9 +2,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { GridOpen } from "../logic/Algorithms/generators/GridOpen";
 import { GridRandom } from "../logic/Algorithms/generators/GridRandom";
-import { Prims } from '../logic/Algorithms/generators/Prims';
+import { GridPrims } from '../logic/Algorithms/generators/GridPrims';
+
 import { PFDFS } from '../logic/Algorithms/pathfind/PFDFS';
 import { PFBFS } from '../logic/Algorithms/pathfind/PFBFS';
+import { PFAStar } from '../logic/Algorithms/pathfind/PFAStar';
 
 import { getHeadlessRuntime } from '../utils/getHeadlessRuntime';
 
@@ -33,7 +35,7 @@ export function useAlgorithmControl({ gridRef, gridSize, currGridGenRef, currPFR
                     algo = initGridGen(GridRandom);
                     break;
                 case "PrimsGrid":
-                    algo = initGridGen(Prims);
+                    algo = initGridGen(GridPrims);
                     break;
                     
                 // Pathfinders
@@ -43,9 +45,9 @@ export function useAlgorithmControl({ gridRef, gridSize, currGridGenRef, currPFR
                 case "BFSPF":
                     algo = initPF(PFBFS);
                     break;
-                // case "AStarPF":
-                    //   setAlgorithm(new PFAStar(gridRef.current));
-                    //   break;
+                case "AStarPF":
+                    algo = initPF(PFAStar);
+                    break;
                 // case "SHPBFSPF":
                     //   setAlgorithm(new PFSHPBFS(gridRef.current));
                     //   break;

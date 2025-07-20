@@ -44,8 +44,8 @@ export class Generator extends Alg {
     }
 
     linkCells(cell1, cell2) {
-        const dir1to2 = this.getDirectionLink(cell1, cell2);
-        const dir2to1 = this.getDirectionLink(cell2, cell1);
+        const dir1to2 = this.getLinkDirection(cell1, cell2);
+        const dir2to1 = this.getLinkDirection(cell2, cell1);
 
         if(!cell1.links.includes(dir1to2)) cell1.links.push(dir1to2);
         if(!cell2.links.includes(dir2to1)) cell2.links.push(dir2to1);

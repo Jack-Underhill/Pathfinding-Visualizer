@@ -51,7 +51,7 @@ export class Alg
         return this.grid.getCell(this.row, this.col);
     }
 
-    getDirectionLink(fromCell, toCell) {
+    getLinkDirection(fromCell, toCell) {
         if(fromCell.row > toCell.row) return Direction.UP;
         if(fromCell.row < toCell.row) return Direction.DOWN;
         if(fromCell.col > toCell.col) return Direction.LEFT;
