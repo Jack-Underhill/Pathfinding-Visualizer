@@ -24,6 +24,12 @@ function AlgPanelGrid({ onRunAlgo, enablePathfinders, onGridSizeChange, gridSize
                     enablePathfinders={enablePathfinders}
                 />
                 <AlgButton 
+                    name="Hunt & Kill"
+                    functionName="HuntAndKillGrid" 
+                    onRunAlgo={onRunAlgo}
+                    enablePathfinders={enablePathfinders}
+                />
+                <AlgButton 
                     name="Prim's"
                     functionName="PrimsGrid" 
                     onRunAlgo={onRunAlgo}
