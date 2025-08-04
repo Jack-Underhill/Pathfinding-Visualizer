@@ -119,7 +119,7 @@ function CanvasGrid({ gridRef, mouseInput, renderVersion, setRenderVersion, onCe
                 ctx.fillStyle = getCSSVar('--color-grid-next');;
                 break;
             case CellType.WALL:
-                ctx.fillStyle = '#3F4045';
+                ctx.fillStyle = getCSSVar('--color-grid-wall');
                 break;
             default:
                 ctx.fillStyle = '#EDEDED';
@@ -130,16 +130,27 @@ function CanvasGrid({ gridRef, mouseInput, renderVersion, setRenderVersion, onCe
         ctx.strokeStyle = getCSSVar('--color-grid-cellBorder');
         ctx.beginPath();
 
-        if(gridRef.current.isOpen || !cell.links.includes(Direction.UP))
-            ctx.moveTo(x, y), ctx.lineTo(x + getCellSize(), y)
-        if(gridRef.current.isOpen || !cell.links.includes(Direction.LEFT))
-            ctx.moveTo(x, y), ctx.lineTo(x, y + getCellSize())
-        if(gridRef.current.isOpen || !cell.links.includes(Direction.DOWN))
-            ctx.moveTo(x, y + getCellSize()), ctx.lineTo(x + getCellSize(), y + getCellSize())
-        if(gridRef.current.isOpen || !cell.links.includes(Direction.RIGHT))
-            ctx.moveTo(x + getCellSize(), y), ctx.lineTo(x + getCellSize(), y + getCellSize())
+        if(isSeperate(cell, Direction.UP))
+            ctx.moveTo(x, y), ctx.lineTo(x + getCellSize(), y);
+
+        if(isSeperate(cell, Direction.LEFT))
+            ctx.moveTo(x, y), ctx.lineTo(x, y + getCellSize());
+
+        if(isSeperate(cell, Direction.DOWN))
+            ctx.moveTo(x, y + getCellSize()), ctx.lineTo(x + getCellSize(), y + getCellSize());
+
+        if(isSeperate(cell, Direction.RIGHT))
+            ctx.moveTo(x + getCellSize(), y), ctx.lineTo(x + getCellSize(), y + getCellSize());
 
         ctx.stroke();
+    }
+
+    const isSeperate = (cell, dir) => {
+        const isWall = cell.type !== CellType.WALL;
+        const isOpenGrid = gridRef.current.isOpen;
+        const islinkedInDir = cell.links.includes(dir);
+        
+        return isWall && (isOpenGrid || !islinkedInDir);
     }
 
     return (

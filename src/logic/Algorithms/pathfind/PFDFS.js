@@ -31,6 +31,7 @@ export class PFDFS extends Pathfind {
         } else {
             // Fail Case: Expanded as far as it could and backtracked to start.
             this.done = true;
+            this.grid.isEditable = true;
             return;
         }
     }

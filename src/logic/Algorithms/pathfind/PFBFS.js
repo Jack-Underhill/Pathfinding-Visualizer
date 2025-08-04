@@ -25,6 +25,7 @@ export class PFBFS extends Pathfind {
         // Fail Case: Expanded as far as it could but did not find the end.
         if(this.q.length <= 0) {
             this.done = true;
+            this.grid.isEditable = true;
         }
     }
 

@@ -42,6 +42,13 @@ export class Alg
     isVisited(cell) { return cell.visited; }
     isNext(cell) { return cell.isNext; }
 
+    isBehaviorType(cell) {
+        return cell.type === CellType.START ||
+               cell.type === CellType.END ||
+               cell.type === CellType.CHECKPOINT ||
+               cell.type === CellType.WALL;
+    }
+
     isBounded(r, c) {
         return (r >= 0 && r < this.grid.rows &&
                 c >= 0 && c < this.grid.cols)

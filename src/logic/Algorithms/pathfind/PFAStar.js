@@ -35,6 +35,7 @@ export class PFAStar extends Pathfind {
         // Fail Case: Expanded as far as it could but did not find the end.
         if(this.pq.isEmpty()) {
             this.done = true;
+            this.grid.isEditable = true;
         }
     }
 

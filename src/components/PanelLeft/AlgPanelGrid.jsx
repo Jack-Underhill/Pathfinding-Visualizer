@@ -35,6 +35,12 @@ function AlgPanelGrid({ onRunAlgo, enablePathfinders, onGridSizeChange, gridSize
                     onRunAlgo={onRunAlgo}
                     enablePathfinders={enablePathfinders}
                 />
+                <AlgButton 
+                    name="Obstacles"
+                    functionName="ObstaclesGrid" 
+                    onRunAlgo={onRunAlgo}
+                    enablePathfinders={enablePathfinders}
+                />
             </div>
 
             {/* divider */}

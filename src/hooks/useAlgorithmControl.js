@@ -4,6 +4,7 @@ import { GridOpen } from "../logic/Algorithms/generators/GridOpen";
 import { GridRandom } from "../logic/Algorithms/generators/GridRandom";
 import { GridPrims } from '../logic/Algorithms/generators/GridPrims';
 import { GridHuntAndKill } from '../logic/Algorithms/generators/GridHuntAndKill';
+import { GridObstacles } from '../logic/Algorithms/generators/GridObstacles';
 
 import { PFDFS } from '../logic/Algorithms/pathfind/PFDFS';
 import { PFBFS } from '../logic/Algorithms/pathfind/PFBFS';
@@ -40,6 +41,9 @@ export function useAlgorithmControl({ gridRef, gridSize, currGridGenRef, currPFR
                     break;
                 case "PrimsGrid":
                     algo = initGridGen(GridPrims);
+                    break;
+                case "ObstaclesGrid":
+                    algo = initGridGen(GridObstacles);
                     break;
                     
                 // Pathfinders

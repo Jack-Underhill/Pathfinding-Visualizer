@@ -22,6 +22,7 @@
   --color-grid-start: #49ff94;
   --color-grid-end: #ff4f4f;
   --color-grid-cellBorder: #0F1822;
+  --color-grid-wall: rgba(90, 92, 98, 0.85);
 
   /* Typography */
   --color-text: rgba(255, 255, 255, 0.95);

@@ -34,7 +34,7 @@ export class MouseInput
         if(this.isDragging) {
             let overlapCell = this.gridRef.current.getCell(row, col);
 
-            if(row !== this.currDragged.row || col !== this.currDragged.col) 
+            if((row !== this.currDragged.row || col !== this.currDragged.col) && overlapCell.type !== CellType.WALL) 
             {
                 let tempType = overlapCell.type;
                 overlapCell.type = this.currDragged.type;

@@ -22,7 +22,7 @@ export class Generator extends Alg {
         let cell = this.getRandGridCell();
         
         // Finds cell that is not already start or end
-        while(cell.type === CellType.START || cell.type === CellType.END) {
+        while(this.isBehaviorType(cell)) {
             cell = this.getRandGridCell();
         }
 
