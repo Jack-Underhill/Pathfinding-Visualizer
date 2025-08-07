@@ -10,7 +10,7 @@ export class GridHuntAndKill extends Generator {
         this.huntIdx = { col: 0, row: 0 };
     }
 
-    static id = "Hunt & Kill Grid";
+    static id = "Hunt and Kill Grid";
     getName() { return GridHuntAndKill.id }
 
     step() {
@@ -39,7 +39,6 @@ export class GridHuntAndKill extends Generator {
         for(let row = 0; row < this.grid.rows; row++) {
             for(let col = 0; col < this.grid.cols; col++) {
                 const currCell = this.grid.getCell(row, col);
-                console.log("findNewHunt", currCell);
 
                 const neighborCell = this.getVisitedNeighbor(currCell);
                 if(currCell.type === CellType.EMPTY && neighborCell) {

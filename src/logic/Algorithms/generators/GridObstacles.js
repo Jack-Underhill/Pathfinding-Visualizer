@@ -99,7 +99,6 @@ export class GridObstacles extends Generator {
             this.setLinks(cell);
         }
         
-        console.log(this.currGenCol);
         this.currGenCol++;
     }
 

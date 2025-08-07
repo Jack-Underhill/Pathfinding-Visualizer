@@ -10,18 +10,27 @@ import { PFDFS } from '../logic/Algorithms/pathfind/PFDFS';
 import { PFBFS } from '../logic/Algorithms/pathfind/PFBFS';
 import { PFAStar } from '../logic/Algorithms/pathfind/PFAStar';
 
+import { AccurateTimer } from '../utils/AccurateTimer'
 import { getHeadlessRuntime } from '../utils/getHeadlessRuntime';
 
 export function useAlgorithmControl({ gridRef, gridSize, currGridGenRef, currPFRef, setRenderVersion, updatePFStats, updateRuntimeStats, refreshCharts }) {
     const [running, setRunning] = useState(false);
     const [speed, setSpeed] = useState(100);
-    
+
+    const runFinishedRef = useRef(true);
     const speedRef = useRef(speed);
+    const timerRef = useRef(null);
 
     const latestRunId = useRef(0);
     const currPFClassRef = useRef(null);
-    
-    useEffect(() => { speedRef.current = speed; }, [speed]);
+
+    useEffect(() => { 
+        speedRef.current = speed;
+
+        if(timerRef.current) {
+            timerRef.current.setInterval(speed);
+        }
+    }, [speed]);
 
 
     const startAlgo = async (algoName) => {
@@ -67,34 +76,52 @@ export function useAlgorithmControl({ gridRef, gridSize, currGridGenRef, currPFR
                     setRunning(false);
                     return;
             }
-            
+
             setRunning(true);
+            runFinishedRef.current = false;
+
             refreshCharts();
             runAlgo(algo);
         }
     }
 
-    const runAlgo = async (algo) => {
+    const runAlgo = (algo) => {
         if(!algo || algo.isDone()) {
-            if(currPFRef.current) {
-                currPFRef.current.runtime = await getHeadlessRuntime(currPFRef.current, gridRef);
-                await updatePFStats();
-                refreshCharts();
-            }
-
-            setRunning(false);
+            finishAlgo();
             return;
         }
 
-        algo.step();
+        timerRef.current = new AccurateTimer(speedRef.current, () => {
+            if(!algo.isDone())
+            {
+                algo.step();
 
-        gridRef.current = algo.grid;
-        setRenderVersion(prevRender => prevRender + 1);
+                gridRef.current = algo.grid;
+                setRenderVersion(prevRender => prevRender + 1);
 
-        updateRuntimeStats(currPFRef.current);
-        setTimeout(() => runAlgo(algo), speedRef.current);
+                updateRuntimeStats(currPFRef.current);
+            } else {
+                timerRef.current.stop();
+                finishAlgo();
+            }
+        });
+
+        timerRef.current.start();
     }
-    
+
+    const finishAlgo = async () => {
+        if(runFinishedRef.current) return;
+        runFinishedRef.current = true;
+
+        if(currPFRef.current) {
+            currPFRef.current.runtime = await getHeadlessRuntime(currPFRef.current, gridRef);
+            await updatePFStats();
+            refreshCharts();
+        }
+
+        setRunning(false);
+    }
+
     const runInstantPF = useCallback(() => {
         if(!currPFRef.current || !gridRef.current.isEditable || !currPFRef.current.isSearchable) {
             setRunning(false);
